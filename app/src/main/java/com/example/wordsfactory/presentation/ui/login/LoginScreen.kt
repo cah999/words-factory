@@ -1,4 +1,4 @@
-package com.example.wordsfactory.presentation.ui.signup
+package com.example.wordsfactory.presentation.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -29,10 +29,9 @@ import com.example.wordsfactory.ui.theme.DarkGrey
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SignUpScreen(
-    navController: NavController, viewModel: SignUpViewModel = koinViewModel()
+fun LoginScreen(
+    navController: NavController, viewModel: LoginViewModel = koinViewModel()
 ) {
-    val nameText by viewModel.nameText.collectAsState()
     val emailText by viewModel.emailText.collectAsState()
     val passwordText by viewModel.passwordText.collectAsState()
     val passwordVisible by viewModel.passwordVisible.collectAsState()
@@ -45,27 +44,21 @@ fun SignUpScreen(
             .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.signup),
+            painter = painterResource(id = R.drawable.login),
             contentDescription = null,
             modifier = Modifier.height(212.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = stringResource(R.string.sign_up),
+            text = stringResource(R.string.log_in),
             style = MaterialTheme.typography.headlineLarge,
             color = Dark
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = stringResource(R.string.create_your_account),
+            text = stringResource(R.string.sign_in_to_your_account),
             style = MaterialTheme.typography.bodyMedium,
             color = DarkGrey
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        InputField(
-            value = nameText,
-            onValueChange = { viewModel.nameText.value = it },
-            label = stringResource(R.string.name)
         )
         Spacer(modifier = Modifier.height(16.dp))
         InputField(
@@ -74,34 +67,34 @@ fun SignUpScreen(
             label = stringResource(R.string.email)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        InputField(
-            value = passwordText,
+        InputField(value = passwordText,
             onValueChange = { viewModel.passwordText.value = it },
             label = stringResource(R.string.password),
             isPassword = true,
             isPasswordVisible = passwordVisible,
-            onButtonToggle = { viewModel.passwordVisible.value = !passwordVisible }
-        )
+            onButtonToggle = { viewModel.passwordVisible.value = !passwordVisible })
         Spacer(modifier = Modifier.weight(1f))
         AccentButton(
             onClick = { navController.navigate(Screen.Dictionary.route) },
             isEnabled = isButtonEnabled,
-            text = stringResource(R.string.sign_up)
+            text = stringResource(R.string.log_in)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = stringResource(R.string.log_in),
+        Text(text = stringResource(R.string.create_acconut),
             style = MaterialTheme.typography.bodyMedium,
             color = DarkGrey,
-            modifier = Modifier.clickable { navController.navigate(Screen.Login.route) {
-                popUpTo(Screen.Registration.route) { inclusive = true }
-            } })
+            modifier = Modifier.clickable {
+                navController.navigate(Screen.Registration.route) {
+                    popUpTo(Screen.Login.route) { inclusive = true }
+                }
+            })
     }
 }
 
 
 @Composable
 @Preview
-fun PreviewSignUpScreen() {
-    SignUpScreen(rememberNavController())
+fun PreviewLoginScreen() {
+    LoginScreen(rememberNavController())
 }
 

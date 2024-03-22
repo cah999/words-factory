@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Words Factory</string>
-    <string name="wordsfactory">WordsFactory</string>
+    <string name="app_name">WordsFactory</string>
     <string name="empty" />
     <string name="sign_up">Sign up</string>
     <string name="create_your_account">Create your account</string>
@@ -8,4 +7,13 @@
     <string name="email">E-mail</string>
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
+    <string name="sign_in_to_your_account">Sign in to your account</string>
+    <string name="create_acconut">Create account</string>
+    <string name="next">Next</string>
+    <string name="intro_1_title">Learn anytime\nand anywhere</string>
+    <string name="intro_desc">Quarantine is the perfect time to spend your\nday learning something new, from anywhere!</string>
+    <string name="intro_2_title">Find a course\nfor you</string>
+    <string name="intro_3_title">Improve your skills</string>
+    <string name="skip">Skip</string>
+    <string name="lets_start">Let\'s Start</string>
 </resources>

@@ -29,7 +29,7 @@ fun SplashScreen(navController: NavController) {
 //    val ctx = LocalContext.current
     LaunchedEffect(Unit) {
 //     todo check first login in app
-        navController.navigate(Screen.Registration.route) {
+        navController.navigate(Screen.Intro.route) {
             popUpTo(Screen.Splash.route) { inclusive = true }
         }
     }
@@ -49,7 +49,7 @@ fun SplashScreen(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = stringResource(R.string.wordsfactory),
+            text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.displayMedium,
         )
 

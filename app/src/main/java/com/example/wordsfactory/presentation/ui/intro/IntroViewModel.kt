@@ -1,11 +1,11 @@
-package com.example.wordsfactory.presentation.ui.signup
+package com.example.wordsfactory.presentation.ui.intro
 
 import androidx.lifecycle.ViewModel
 import com.example.wordsfactory.common.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 
-class SignUpViewModel : ViewModel() {
+class IntroViewModel : ViewModel() {
     val nameText = MutableStateFlow(Constants.EMPTY)
     val emailText = MutableStateFlow(Constants.EMPTY)
     val passwordText = MutableStateFlow(Constants.EMPTY)

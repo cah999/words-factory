@@ -2,6 +2,8 @@ package com.example.wordsfactory.app
 
 import android.app.Application
 import com.example.wordsfactory.di.appModule
+import com.example.wordsfactory.di.dataModule
+import com.example.wordsfactory.di.domainModule
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
@@ -12,8 +14,7 @@ class App : Application() {
 
         startKoin {
             androidLogger(Level.DEBUG)
-//            androidContext(this@App)
-            modules(listOf(appModule))
+            modules(listOf(appModule, dataModule, domainModule))
         }
     }
 }

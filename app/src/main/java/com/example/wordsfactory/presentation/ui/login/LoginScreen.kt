@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,17 +22,24 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wordsfactory.R
+import com.example.wordsfactory.di.appModule
 import com.example.wordsfactory.presentation.navigation.Screen
 import com.example.wordsfactory.presentation.ui.utils.AccentButton
 import com.example.wordsfactory.presentation.ui.utils.InputField
+import com.example.wordsfactory.presentation.ui.utils.UiState
 import com.example.wordsfactory.ui.theme.Dark
 import com.example.wordsfactory.ui.theme.DarkGrey
+import com.example.wordsfactory.ui.theme.Error
+import com.example.wordsfactory.ui.theme.LightGrey
+import com.example.wordsfactory.ui.theme.PrimaryColor
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.KoinApplication
 
 @Composable
 fun LoginScreen(
     navController: NavController, viewModel: LoginViewModel = koinViewModel()
 ) {
+    val loginUiState by viewModel.loginUiState.collectAsState()
     val emailText by viewModel.emailText.collectAsState()
     val passwordText by viewModel.passwordText.collectAsState()
     val passwordVisible by viewModel.passwordVisible.collectAsState()
@@ -73,9 +81,30 @@ fun LoginScreen(
             isPassword = true,
             isPasswordVisible = passwordVisible,
             onButtonToggle = { viewModel.passwordVisible.value = !passwordVisible })
+
+        if (loginUiState is UiState.Error) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = (loginUiState as UiState.Error).message,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.align(Alignment.Start),
+                color = Error
+            )
+        }
+        if (loginUiState is UiState.Loading) {
+            Spacer(modifier = Modifier.height(16.dp))
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth(),
+                color = PrimaryColor,
+                trackColor = LightGrey
+            )
+        }
         Spacer(modifier = Modifier.weight(1f))
         AccentButton(
-            onClick = { navController.navigate(Screen.Dictionary.route) },
+            onClick = {
+                viewModel.login()
+//                navController.navigate(Screen.Dictionary.route)
+            },
             isEnabled = isButtonEnabled,
             text = stringResource(R.string.log_in)
         )
@@ -95,6 +124,10 @@ fun LoginScreen(
 @Composable
 @Preview
 fun PreviewLoginScreen() {
-    LoginScreen(rememberNavController())
+    KoinApplication(application = {
+        modules(appModule)
+    }) {
+        LoginScreen(rememberNavController())
+    }
 }
 

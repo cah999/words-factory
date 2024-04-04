@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,17 +22,26 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wordsfactory.R
+import com.example.wordsfactory.di.appModule
+import com.example.wordsfactory.di.dataModule
+import com.example.wordsfactory.di.domainModule
 import com.example.wordsfactory.presentation.navigation.Screen
 import com.example.wordsfactory.presentation.ui.utils.AccentButton
 import com.example.wordsfactory.presentation.ui.utils.InputField
+import com.example.wordsfactory.presentation.ui.utils.UiState
 import com.example.wordsfactory.ui.theme.Dark
 import com.example.wordsfactory.ui.theme.DarkGrey
+import com.example.wordsfactory.ui.theme.Error
+import com.example.wordsfactory.ui.theme.LightGrey
+import com.example.wordsfactory.ui.theme.PrimaryColor
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.KoinApplication
 
 @Composable
 fun SignUpScreen(
     navController: NavController, viewModel: SignUpViewModel = koinViewModel()
 ) {
+    val signUpUiState by viewModel.signUpUiState.collectAsState()
     val nameText by viewModel.nameText.collectAsState()
     val emailText by viewModel.emailText.collectAsState()
     val passwordText by viewModel.passwordText.collectAsState()
@@ -82,9 +92,30 @@ fun SignUpScreen(
             isPasswordVisible = passwordVisible,
             onButtonToggle = { viewModel.passwordVisible.value = !passwordVisible }
         )
+        if (signUpUiState is UiState.Error) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = (signUpUiState as UiState.Error).message,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.align(Alignment.Start),
+                color = Error
+            )
+        }
+        if (signUpUiState is UiState.Loading) {
+            Spacer(modifier = Modifier.height(16.dp))
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth(),
+                color = PrimaryColor,
+                trackColor = LightGrey
+            )
+        }
+
         Spacer(modifier = Modifier.weight(1f))
         AccentButton(
-            onClick = { navController.navigate(Screen.Dictionary.route) },
+            onClick = {
+                viewModel.signUp()
+//                navController.navigate(Screen.Dictionary.route)
+            },
             isEnabled = isButtonEnabled,
             text = stringResource(R.string.sign_up)
         )
@@ -92,16 +123,22 @@ fun SignUpScreen(
         Text(text = stringResource(R.string.log_in),
             style = MaterialTheme.typography.bodyMedium,
             color = DarkGrey,
-            modifier = Modifier.clickable { navController.navigate(Screen.Login.route) {
-                popUpTo(Screen.Registration.route) { inclusive = true }
-            } })
+            modifier = Modifier.clickable {
+                navController.navigate(Screen.Login.route) {
+                    popUpTo(Screen.Registration.route) { inclusive = true }
+                }
+            })
     }
 }
 
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun PreviewSignUpScreen() {
-    SignUpScreen(rememberNavController())
-}
+    KoinApplication(application = {
+        modules(appModule, dataModule, domainModule)
+    }) {
+        SignUpScreen(rememberNavController())
+    }
 
+}

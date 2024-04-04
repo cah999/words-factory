@@ -1,5 +1,6 @@
 package com.example.wordsfactory.presentation.ui.intro
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -29,16 +30,29 @@ import androidx.navigation.compose.rememberNavController
 import com.example.wordsfactory.R
 import com.example.wordsfactory.presentation.navigation.Screen
 import com.example.wordsfactory.presentation.ui.intro.utils.CustomIndicator
+import com.example.wordsfactory.presentation.ui.intro.utils.IntroPage
 import com.example.wordsfactory.presentation.ui.utils.AccentButton
 import com.example.wordsfactory.ui.theme.Dark
 import com.example.wordsfactory.ui.theme.DarkGrey
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
-
-data class IntroPage(val image: Int, val title: String, val description: String)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun IntroScreen(navController: NavController) {
+    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+        if (!task.isSuccessful) {
+            Log.w("INTRO", "Fetching FCM registration token failed", task.exception)
+            return@OnCompleteListener
+        }
+
+        // Get new FCM registration token
+        val token = task.result
+
+        // Log and toast
+        Log.d("INTRO", token)
+    })
     val pages = listOf(
         IntroPage(
             R.drawable.intro1,
@@ -102,7 +116,7 @@ fun IntroScreen(navController: NavController) {
                 )
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         CustomIndicator(
             fullWidth = 60.dp,
             count = 3,

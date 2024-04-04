@@ -1,5 +1,9 @@
 [versions]
-agp = "8.3.0"
+accompanistPermissions = "0.35.0-alpha"
+agp = "8.3.1"
+firebaseAuthKtx = "22.3.1"
+firebaseBom = "32.8.0"
+firebaseCore = "21.1.1"
 koinAndroidVersion = "3.6.0-wasm-alpha2"
 kotlin = "1.9.0"
 coreKtx = "1.12.0"
@@ -9,17 +13,19 @@ espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.7.0"
 composeBom = "2023.08.00"
-material = "1.6.3"
-navigationComposeVersion = "2.7.4"
+material = "1.6.4"
+navigationComposeVersion = "2.7.7"
 navigationRuntimeKtx = "2.7.7"
 navigationCompose = "2.7.7"
-navigationRuntimeKtxVersion = "2.7.4"
+navigationRuntimeKtxVersion = "2.7.7"
+firebaseDatabaseKtx = "20.3.1"
 
 [libraries]
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
-androidx-navigation-compose-v274 = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
-androidx-navigation-runtime-ktx-v274 = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "navigationRuntimeKtxVersion" }
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-core = { module = "com.google.firebase:firebase-core", version.ref = "firebaseCore" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidVersion" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroidVersion" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinAndroidVersion" }
@@ -39,6 +45,10 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseDatabaseKtx" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseDatabaseKtx" }
+
 
 
 [plugins]

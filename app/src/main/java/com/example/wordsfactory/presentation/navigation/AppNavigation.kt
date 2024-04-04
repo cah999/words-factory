@@ -17,7 +17,11 @@ fun AppNavigation(
         navController, startDestination = Screen.Splash.route
     ) {
         composable(Screen.Splash.route) {
-            SplashScreen(navController = navController)
+            SplashScreen(onSuccessNavigate = {
+                navController.navigate(Screen.Intro.route) {
+                    popUpTo(Screen.Splash.route) { inclusive = true }
+                }
+            })
         }
         composable(Screen.Registration.route) {
             SignUpScreen(navController = navController)

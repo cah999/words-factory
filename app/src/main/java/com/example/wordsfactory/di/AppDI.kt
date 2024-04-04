@@ -9,11 +9,11 @@ import org.koin.dsl.module
 
 val appModule = module {
     viewModel<SignUpViewModel> {
-        SignUpViewModel()
+        SignUpViewModel(registerUseCase = get())
     }
 
     viewModel<LoginViewModel> {
-        LoginViewModel()
+        LoginViewModel(loginUseCase = get())
     }
 
     viewModel<IntroViewModel> {

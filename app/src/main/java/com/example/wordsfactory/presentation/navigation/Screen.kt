@@ -7,12 +7,13 @@ sealed class Screen(val route: String, val title: String, val imageResource: Int
     data object Intro : Screen("intro", "Intro", null)
     data object Login : Screen("login", "Login", null)
     data object Registration : Screen("registration", "Registration", null)
+    data object Question : Screen("question", "Question", null)
     data object Dictionary : Screen(
         "dictionary", "Dictionary",
-        android.R.drawable.alert_light_frame
+        R.drawable.courses
     )
 
-    data object Training : Screen("training", "Training", android.R.drawable.alert_light_frame)
+    data object Training : Screen("training", "Training", R.drawable.training)
 
-    data object Video : Screen("video", "Video", android.R.drawable.alert_light_frame)
+    data object Video : Screen("video", "Video", R.drawable.video)
 }

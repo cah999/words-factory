@@ -13,8 +13,9 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.Dp
 import com.example.wordsfactory.ui.theme.Grey
-import com.example.wordsfactory.ui.theme.SecondaryColor
+import com.example.wordsfactory.ui.theme.Secondary
 
+// todo он находится не по центру =(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CustomIndicator(
@@ -49,7 +50,7 @@ fun CustomIndicator(
                 else -> dotWidth
             }
 
-            val color = if (i == pagerState.currentPage) SecondaryColor else Grey
+            val color = if (i == pagerState.currentPage) Secondary else Grey
             drawIndicator(x, y, calculatedWidth, dotHeight, radius, color)
             x += calculatedWidth + spacing
         }

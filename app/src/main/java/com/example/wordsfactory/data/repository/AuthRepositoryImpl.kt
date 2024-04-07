@@ -2,6 +2,7 @@ package com.example.wordsfactory.data.repository
 
 import android.util.Log
 import com.example.wordsfactory.data.model.User
+import com.example.wordsfactory.data.model.UserLogin
 import com.example.wordsfactory.domain.repository.AuthRepository
 import com.example.wordsfactory.presentation.ui.utils.UiState
 import com.google.firebase.Firebase
@@ -12,9 +13,8 @@ import com.google.firebase.auth.userProfileChangeRequest
 class AuthRepositoryImpl(
     private val auth: FirebaseAuth
 ) : AuthRepository {
-    // todo ASK где хранить напрмер имя юзера?
-    override fun login(email: String, password: String, result: (UiState) -> Unit) {
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+    override fun login(loginData: UserLogin, result: (UiState) -> Unit) {
+        auth.signInWithEmailAndPassword(loginData.email, loginData.password).addOnCompleteListener {
             if (it.isSuccessful) {
                 val currentUser = Firebase.auth.currentUser
                 Log.d("AuthRepository", "Current user name: ${currentUser?.displayName}")
@@ -26,16 +26,17 @@ class AuthRepositoryImpl(
     }
 
     override fun register(
-        email: String, password: String, user: User, result: (UiState) -> Unit
+        loginData: UserLogin, user: User, result: (UiState) -> Unit
     ) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-            if (it.isSuccessful) {
-                updateProfile(user)
-                result.invoke(UiState.Success)
-            } else {
-                result.invoke(UiState.Error(it.exception?.message ?: "An error occurred"))
+        auth.createUserWithEmailAndPassword(loginData.email, loginData.password)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    updateProfile(user)
+                    result.invoke(UiState.Success)
+                } else {
+                    result.invoke(UiState.Error(it.exception?.message ?: "An error occurred"))
+                }
             }
-        }
     }
 
     override fun updateProfile(user: User) {

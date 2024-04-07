@@ -25,10 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.wordsfactory.R
-import com.example.wordsfactory.presentation.navigation.Screen
 import com.example.wordsfactory.presentation.ui.intro.utils.CustomIndicator
 import com.example.wordsfactory.presentation.ui.intro.utils.IntroPage
 import com.example.wordsfactory.presentation.ui.utils.AccentButton
@@ -40,7 +37,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun IntroScreen(navController: NavController) {
+fun IntroScreen(onNavigation: () -> Unit) {
     FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
         if (!task.isSuccessful) {
             Log.w("INTRO", "Fetching FCM registration token failed", task.exception)
@@ -84,7 +81,7 @@ fun IntroScreen(navController: NavController) {
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(end = 16.dp)
-                .clickable { navController.navigate(Screen.Registration.route) },
+                .clickable { onNavigation() },
             style = MaterialTheme.typography.labelMedium,
             color = DarkGrey
         )
@@ -131,7 +128,7 @@ fun IntroScreen(navController: NavController) {
         AccentButton(
             onClick = {
                 if (pagerState.currentPage == 2) {
-                    navController.navigate(Screen.Registration.route)
+                    onNavigation()
                 } else coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
             },
             isEnabled = true,
@@ -147,5 +144,5 @@ fun IntroScreen(navController: NavController) {
 @Preview
 @Composable
 private fun IntroPreview() {
-    IntroScreen(rememberNavController())
+    IntroScreen(onNavigation = {})
 }

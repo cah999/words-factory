@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.firebase.database.ktx)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.messaging)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     testImplementation(libs.koin.test)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

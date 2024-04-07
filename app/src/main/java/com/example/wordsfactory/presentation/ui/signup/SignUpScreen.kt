@@ -11,7 +11,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,13 +19,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.wordsfactory.R
 import com.example.wordsfactory.di.appModule
 import com.example.wordsfactory.di.dataModule
 import com.example.wordsfactory.di.domainModule
-import com.example.wordsfactory.presentation.navigation.Screen
 import com.example.wordsfactory.presentation.ui.utils.AccentButton
 import com.example.wordsfactory.presentation.ui.utils.InputField
 import com.example.wordsfactory.presentation.ui.utils.UiState
@@ -33,21 +31,24 @@ import com.example.wordsfactory.ui.theme.Dark
 import com.example.wordsfactory.ui.theme.DarkGrey
 import com.example.wordsfactory.ui.theme.Error
 import com.example.wordsfactory.ui.theme.LightGrey
-import com.example.wordsfactory.ui.theme.PrimaryColor
+import com.example.wordsfactory.ui.theme.Primary
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.KoinApplication
 
 @Composable
 fun SignUpScreen(
-    navController: NavController, viewModel: SignUpViewModel = koinViewModel()
+    onSuccessfulRegistration: () -> Unit,
+    onLoginNavigation: () -> Unit,
+    viewModel: SignUpViewModel = koinViewModel()
 ) {
-    val signUpUiState by viewModel.signUpUiState.collectAsState()
-    val nameText by viewModel.nameText.collectAsState()
-    val emailText by viewModel.emailText.collectAsState()
-    val passwordText by viewModel.passwordText.collectAsState()
-    val passwordVisible by viewModel.passwordVisible.collectAsState()
-    val isButtonEnabled by viewModel.isButtonEnabled.collectAsState(false)
+    val signUpUiState by viewModel.signUpUiState.collectAsStateWithLifecycle()
+    val signUpState by viewModel.signUpState.collectAsStateWithLifecycle()
 
+    if (signUpUiState is UiState.Success) {
+        LaunchedEffect(Unit) {
+            onSuccessfulRegistration()
+        }
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -73,24 +74,24 @@ fun SignUpScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         InputField(
-            value = nameText,
-            onValueChange = { viewModel.nameText.value = it },
+            value = signUpState.nameText,
+            onValueChange = { viewModel.onNameTextChanged(it) },
             label = stringResource(R.string.name)
         )
         Spacer(modifier = Modifier.height(16.dp))
         InputField(
-            value = emailText,
-            onValueChange = { viewModel.emailText.value = it },
+            value = signUpState.emailText,
+            onValueChange = { viewModel.onEmailTextChanged(it) },
             label = stringResource(R.string.email)
         )
         Spacer(modifier = Modifier.height(16.dp))
         InputField(
-            value = passwordText,
-            onValueChange = { viewModel.passwordText.value = it },
+            value = signUpState.passwordText,
+            onValueChange = { viewModel.onPasswordTextChanged(it) },
             label = stringResource(R.string.password),
             isPassword = true,
-            isPasswordVisible = passwordVisible,
-            onButtonToggle = { viewModel.passwordVisible.value = !passwordVisible }
+            isPasswordVisible = signUpState.passwordVisible,
+            onButtonToggle = { viewModel.onPasswordVisibilityChanged() }
         )
         if (signUpUiState is UiState.Error) {
             Spacer(modifier = Modifier.height(8.dp))
@@ -105,7 +106,7 @@ fun SignUpScreen(
             Spacer(modifier = Modifier.height(16.dp))
             LinearProgressIndicator(
                 modifier = Modifier.fillMaxWidth(),
-                color = PrimaryColor,
+                color = Primary,
                 trackColor = LightGrey
             )
         }
@@ -114,9 +115,8 @@ fun SignUpScreen(
         AccentButton(
             onClick = {
                 viewModel.signUp()
-//                navController.navigate(Screen.Dictionary.route)
             },
-            isEnabled = isButtonEnabled,
+            isEnabled = signUpState.isButtonEnabled,
             text = stringResource(R.string.sign_up)
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -124,9 +124,7 @@ fun SignUpScreen(
             style = MaterialTheme.typography.bodyMedium,
             color = DarkGrey,
             modifier = Modifier.clickable {
-                navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Registration.route) { inclusive = true }
-                }
+                onLoginNavigation()
             })
     }
 }
@@ -138,7 +136,7 @@ fun PreviewSignUpScreen() {
     KoinApplication(application = {
         modules(appModule, dataModule, domainModule)
     }) {
-        SignUpScreen(rememberNavController())
+        SignUpScreen({}, {})
     }
 
 }

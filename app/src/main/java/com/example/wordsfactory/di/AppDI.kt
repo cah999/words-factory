@@ -21,6 +21,6 @@ val appModule = module {
     }
 
     viewModel<SplashViewModel> {
-        SplashViewModel()
+        SplashViewModel(checkUserAuthUseCase = get())
     }
 }

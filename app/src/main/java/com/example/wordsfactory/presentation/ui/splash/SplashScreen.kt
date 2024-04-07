@@ -1,7 +1,5 @@
 package com.example.wordsfactory.presentation.ui.splash
 
-import android.Manifest
-import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,8 +16,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,40 +23,51 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wordsfactory.R
-import com.example.wordsfactory.common.Constants
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun SplashScreen(onSuccessNavigate: () -> Unit) {
-    val showNotificationDialog = remember { mutableStateOf(false) }
-    val notificationPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        rememberPermissionState(
-            permission = Manifest.permission.POST_NOTIFICATIONS
-        )
-    } else {
-        rememberPermissionState(
-            permission = Manifest.permission.ACCESS_NOTIFICATION_POLICY
-        )
-    }
-    if (showNotificationDialog.value) FirebaseMessagingNotificationPermissionDialog(
-        showNotificationDialog = showNotificationDialog,
-        notificationPermissionState = notificationPermissionState,
-        onResultNavigate = {
+fun SplashScreen(
+    onSuccessNavigate: () -> Unit,
+    onFailedNavigate: () -> Unit,
+    viewModel: SplashViewModel = koinViewModel()
+) {
+//    val showNotificationDialog = remember { mutableStateOf(false) }
+    // todo вынести разрешение на напоминания после добавления первого слова
+//    val notificationPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//        rememberPermissionState(
+//            permission = Manifest.permission.POST_NOTIFICATIONS
+//        )
+//    } else {
+//        rememberPermissionState(
+//            permission = Manifest.permission.ACCESS_NOTIFICATION_POLICY
+//        )
+//    }
+//    if (showNotificationDialog.value) FirebaseMessagingNotificationPermissionDialog(
+//        showNotificationDialog = showNotificationDialog,
+//        notificationPermissionState = notificationPermissionState,
+//        onResultNavigate = {
+//            onSuccessNavigate()
+//        })
+//
+//    LaunchedEffect(key1 = Unit) {
+//        if (notificationPermissionState.status.isGranted || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+//            Firebase.messaging.subscribeToTopic(Constants.DAILY_NOTIFICATION_TOPIC)
+//            onSuccessNavigate()
+//        } else {
+//            showNotificationDialog.value = true
+//        }
+//    }
+
+    LaunchedEffect(Unit) {
+        if (viewModel.isUserLoggedIn()) {
             onSuccessNavigate()
-        })
-
-    LaunchedEffect(key1 = Unit) {
-        if (notificationPermissionState.status.isGranted || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            Firebase.messaging.subscribeToTopic(Constants.DAILY_NOTIFICATION_TOPIC)
-
         } else {
-            showNotificationDialog.value = true
+            onFailedNavigate()
         }
     }
 
@@ -125,5 +132,5 @@ fun FirebaseMessagingNotificationPermissionDialog(
 @Preview
 @Composable
 private fun SplashPreview() {
-    SplashScreen(onSuccessNavigate = {})
+    SplashScreen(onSuccessNavigate = {}, onFailedNavigate = {})
 }

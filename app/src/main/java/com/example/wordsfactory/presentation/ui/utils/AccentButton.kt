@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
-import com.example.wordsfactory.ui.theme.PrimaryColor
+import com.example.wordsfactory.ui.theme.Primary
 import com.example.wordsfactory.ui.theme.White
 
 @Composable
@@ -24,10 +24,10 @@ fun AccentButton(
             .fillMaxWidth()
             .height(56.dp)
             .alpha(if (isEnabled) 1f else 0.45f),
-        shape = RoundedCornerShape(size = 10.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = PrimaryColor,
-            disabledContainerColor = PrimaryColor,
+            containerColor = Primary,
+            disabledContainerColor = Primary,
         ),
         enabled = isEnabled
     ) {

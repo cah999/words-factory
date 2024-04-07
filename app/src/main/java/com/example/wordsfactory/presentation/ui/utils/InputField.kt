@@ -39,8 +39,8 @@ fun InputField(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Grey,
-            unfocusedBorderColor = DarkGrey,
+            focusedBorderColor = DarkGrey,
+            unfocusedBorderColor = Grey,
             focusedTextColor = Dark,
             unfocusedTextColor = Dark,
         ),

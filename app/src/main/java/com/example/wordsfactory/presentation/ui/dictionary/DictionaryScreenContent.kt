@@ -31,6 +31,7 @@ import com.example.wordsfactory.ui.theme.DarkGrey
 import com.example.wordsfactory.ui.theme.Primary
 import kotlinx.coroutines.launch
 
+// todo transcription nullable (q)
 @Composable
 fun DictionaryScreenContent(
     modifier: Modifier = Modifier, wordContent: WordContent, viewModel: DictionaryViewModel

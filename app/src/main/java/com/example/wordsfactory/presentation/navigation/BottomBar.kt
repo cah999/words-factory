@@ -1,13 +1,15 @@
 package com.example.wordsfactory.presentation.navigation
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,20 +17,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.wordsfactory.ui.theme.Grey
+import com.example.wordsfactory.ui.theme.Primary
+import com.example.wordsfactory.ui.theme.White
 
 @Composable
 fun BottomBar(navController: NavController) {
     Column {
-        HorizontalDivider(
-            modifier = Modifier.fillMaxWidth(),
-            thickness = 1.dp,
-            color = Color(0xA6545458)
-        )
         NavigationBar(
-            containerColor = Color(0xFF161616),
+            containerColor = White, contentColor = White,
             modifier = Modifier
-                .width(360.dp)
-                .height(67.dp)
+                .fillMaxWidth()
+                .height(64.dp)
+                .border(1.dp, Grey, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+
         ) {
             val screensToDisplay = listOf(Screen.Dictionary, Screen.Training, Screen.Video)
             val currentScreen = navController.currentBackStackEntry?.destination?.route
@@ -39,13 +41,16 @@ fun BottomBar(navController: NavController) {
                         screen.imageResource?.let { resource ->
                             Icon(
                                 painter = painterResource(resource),
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = if (currentScreen == screen.route) Primary else Grey
                             )
                         }
                     },
                     label = {
                         Text(
                             text = screen.title,
+                            color = if (currentScreen == screen.route) Primary else Grey,
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     },
                     selected = currentScreen == screen.route,
@@ -55,6 +60,9 @@ fun BottomBar(navController: NavController) {
                             launchSingleTop = true
                         }
                     },
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = Color.Transparent
+                    )
                 )
             }
         }

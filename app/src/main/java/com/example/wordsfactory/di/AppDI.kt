@@ -1,5 +1,6 @@
 package com.example.wordsfactory.di
 
+import com.example.wordsfactory.presentation.ui.dictionary.DictionaryViewModel
 import com.example.wordsfactory.presentation.ui.intro.IntroViewModel
 import com.example.wordsfactory.presentation.ui.login.LoginViewModel
 import com.example.wordsfactory.presentation.ui.signup.SignUpViewModel
@@ -22,5 +23,9 @@ val appModule = module {
 
     viewModel<SplashViewModel> {
         SplashViewModel(checkUserAuthUseCase = get())
+    }
+
+    viewModel<DictionaryViewModel> {
+        DictionaryViewModel(getWordUseCase = get())
     }
 }

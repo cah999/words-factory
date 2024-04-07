@@ -1,6 +1,7 @@
 package com.example.wordsfactory.di
 
 import com.example.wordsfactory.domain.usecase.CheckUserAuthUseCase
+import com.example.wordsfactory.domain.usecase.GetWordUseCase
 import com.example.wordsfactory.domain.usecase.LoginUseCase
 import com.example.wordsfactory.domain.usecase.RegisterUseCase
 import org.koin.dsl.module
@@ -17,5 +18,9 @@ val domainModule = module {
 
     factory<CheckUserAuthUseCase> {
         CheckUserAuthUseCase(authRepository = get())
+    }
+
+    factory<GetWordUseCase> {
+        GetWordUseCase(dictionaryRepository = get())
     }
 }

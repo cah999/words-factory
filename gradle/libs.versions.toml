@@ -1,6 +1,7 @@
 [versions]
 accompanistPermissions = "0.35.0-alpha"
 agp = "8.3.1"
+converterGson = "2.11.0"
 firebaseAuthKtx = "22.3.1"
 firebaseBom = "32.8.0"
 firebaseCore = "21.1.1"
@@ -20,11 +21,13 @@ navigationRuntimeKtx = "2.7.7"
 navigationCompose = "2.7.7"
 navigationRuntimeKtxVersion = "2.7.7"
 firebaseDatabaseKtx = "20.3.1"
+retrofitVersion = "2.11.0"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-core = { module = "com.google.firebase:firebase-core", version.ref = "firebaseCore" }
@@ -50,6 +53,7 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseDatabaseKtx" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseDatabaseKtx" }
+retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
 
 
 

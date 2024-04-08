@@ -1,5 +1,7 @@
 [versions]
 accompanistPermissions = "0.35.0-alpha"
+accompanistSystemuicontroller = "0.27.0"
+activityKtx = "1.8.2"
 agp = "8.3.1"
 converterGson = "2.11.0"
 firebaseAuthKtx = "22.3.1"
@@ -22,9 +24,12 @@ navigationCompose = "2.7.7"
 navigationRuntimeKtxVersion = "2.7.7"
 firebaseDatabaseKtx = "20.3.1"
 retrofitVersion = "2.11.0"
+material3WindowSizeClassAndroid = "1.2.1"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
@@ -54,6 +59,7 @@ firebase-database-ktx = { group = "com.google.firebase", name = "firebase-databa
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseDatabaseKtx" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseDatabaseKtx" }
 retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
+androidx-material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class-android", version.ref = "material3WindowSizeClassAndroid" }
 
 
 

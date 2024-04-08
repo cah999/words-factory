@@ -25,34 +25,14 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
     val dictionaryUiState by viewModel.dictionaryUiState.collectAsStateWithLifecycle()
     val dictionaryState by viewModel.dictionaryState.collectAsStateWithLifecycle()
 
-//    val content = listOf(
-//        WordContent(
-//            "Word",
-//            "[transcription]",
-//            "Voice",
-//            "Part of speech",
-//            listOf(
-//                Meaning(
-//                    "Definition",
-//                    "Example"
-//                ),
-//                Meaning(
-//                    "Another DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother DefinitionAnother Definition",
-//                    "Example"
-//                ),
-//            )
-//        )
-//    )
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp)
             .verticalScroll(rememberScrollState())
     ) {
         SearchRow(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 24.dp),
+            .padding(top = 24.dp, start = 16.dp, end = 16.dp),
             search = dictionaryState.searchText,
             onSearchValueChange = { viewModel.onSearchTextChanged(it) },
             onSearch = {})
@@ -63,7 +43,7 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
             is Success -> if (dictionaryState.wordContent != null) {
                 DictionaryScreenContent(
                     modifier = Modifier.padding(top = 16.dp),
-                    wordContent = dictionaryState.wordContent!!,
+                    wordContents = dictionaryState.wordContent!!,
                     viewModel = viewModel
                 )
             } else DictionaryScreenPlaceholder(
@@ -87,13 +67,21 @@ fun DictionaryScreenLoading() {
 
 data class WordContent(
     val word: String,
-    val transcription: String,
-    val voice: String?,
-    val partOfSpeech: String,
+    val phonetics: List<Phonetic>?,
     val meanings: List<Meaning>
 )
 
+data class Phonetic(
+    val transcription: String?,
+    val voice: String?
+)
+
 data class Meaning(
+    val partOfSpeech: String,
+    val definitions: List<Definition>
+)
+
+data class Definition(
     val definition: String,
     val example: String?,
 )

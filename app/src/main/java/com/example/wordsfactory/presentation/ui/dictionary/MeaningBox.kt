@@ -22,13 +22,15 @@ import com.example.wordsfactory.ui.theme.Grey
 import com.example.wordsfactory.ui.theme.Secondary
 
 @Composable
-fun MeaningBox(modifier: Modifier, meaning: Meaning) {
+fun MeaningBox(modifier: Modifier, definition: Definition) {
     Box(modifier = modifier.border(1.dp, Grey, RoundedCornerShape(16.dp))) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = meaning.definition, style = MaterialTheme.typography.bodyMedium, color = Dark
+                text = definition.definition,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Dark
             )
-            if (meaning.example != null) {
+            if (definition.example != null) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     verticalAlignment = Alignment.Top,
@@ -40,7 +42,7 @@ fun MeaningBox(modifier: Modifier, meaning: Meaning) {
                         color = Secondary
                     )
                     Text(
-                        text = meaning.example,
+                        text = definition.example,
                         style = MaterialTheme.typography.bodyMedium,
                         color = Dark
                     )

@@ -1,6 +1,5 @@
 package com.example.wordsfactory.data.repository
 
-import android.util.Log
 import com.example.wordsfactory.data.model.WordRequest
 import com.example.wordsfactory.data.service.DictionaryApiService
 import com.example.wordsfactory.data.service.WordResponse
@@ -14,8 +13,6 @@ class DictionaryRepositoryImpl(private val dictionaryApiService: DictionaryApiSe
         result: (UiState) -> Unit
     ): List<WordResponse>? {
         dictionaryApiService.getWordContent(request.searchText).let {
-            Log.d("DictionaryRepositoryImpl", "getWordContent: $it")
-            Log.d("DictionaryRepositoryImpl", "getWordContent: ${it.body()}")
             if (it.isSuccessful) {
                 result.invoke(UiState.Success)
                 return it.body()

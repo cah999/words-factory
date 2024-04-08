@@ -42,5 +42,6 @@ fun DictionaryScreenPlaceholder(modifier: Modifier) {
             style = MaterialTheme.typography.bodyMedium,
             color = DarkGrey
         )
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }

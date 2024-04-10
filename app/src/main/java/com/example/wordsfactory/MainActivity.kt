@@ -31,15 +31,16 @@ import com.example.wordsfactory.ui.theme.Grey
 import com.example.wordsfactory.ui.theme.WordsFactoryTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
+
 // todo спросить оставить ли cutout??
 class MainActivity : ComponentActivity() {
+
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         window.attributes.layoutInDisplayCutoutMode =
             WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
-
         setContent {
             val systemUiController = rememberSystemUiController()
             systemUiController.setStatusBarColor(
@@ -60,7 +61,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Scaffold(
-//                        contentWindowInsets = WindowInsets(0.dp),
                         bottomBar = {
                             when (currentRoute) {
 
@@ -78,7 +78,6 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(it)
                                 .fillMaxSize()
-//                                .windowInsetsPadding(WindowInsets.safeContent)
                                 .padding(
                                     // 80 if no cutout
                                     start = if (showNavigationRail) 45.dp else 0.dp

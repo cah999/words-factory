@@ -34,7 +34,9 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
             .fillMaxWidth()
             .padding(top = 24.dp, start = 16.dp, end = 16.dp),
             search = dictionaryState.searchText,
-            onSearchValueChange = { viewModel.onSearchTextChanged(it) },
+            onSearchValueChange = {
+                viewModel.onSearchTextChanged(it)
+            },
             onSearch = {})
         when (dictionaryUiState) {
             is Loading -> DictionaryScreenLoading()
@@ -66,19 +68,15 @@ fun DictionaryScreenLoading() {
 
 
 data class WordContent(
-    val word: String,
-    val phonetics: List<Phonetic>?,
-    val meanings: List<Meaning>
+    val word: String, val phonetics: List<Phonetic>?, val meanings: List<Meaning>
 )
 
 data class Phonetic(
-    val transcription: String?,
-    val voice: String?
+    val transcription: String?, val voice: String?
 )
 
 data class Meaning(
-    val partOfSpeech: String,
-    val definitions: List<Definition>
+    val partOfSpeech: String, val definitions: List<Definition>
 )
 
 data class Definition(

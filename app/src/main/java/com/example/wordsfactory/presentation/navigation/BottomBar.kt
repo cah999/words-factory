@@ -69,7 +69,6 @@ fun BottomBar(navController: NavController) {
 }
 
 
-// todo можно ли растянуть на зону status bar
 @Composable
 fun NavigationRailBar(navController: NavController) {
     androidx.compose.material3.NavigationRail {

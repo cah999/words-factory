@@ -7,19 +7,40 @@ import com.example.wordsfactory.data.service.PhoneticResponse
 import com.example.wordsfactory.data.service.WordResponse
 import com.example.wordsfactory.domain.usecase.GetWordUseCase
 import com.example.wordsfactory.presentation.ui.utils.UiState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private const val DEBOUNCE_TIMEOUT = 300L // 300 milliseconds
+
 class DictionaryViewModel(private val getWordUseCase: GetWordUseCase) : ViewModel() {
     private val _dictionaryUiState = MutableStateFlow<UiState>(UiState.Default)
     val dictionaryUiState get() = _dictionaryUiState.asStateFlow()
 
+
     private val _dictionaryState = MutableStateFlow(DictionaryState())
     val dictionaryState = _dictionaryState.asStateFlow()
+    private var debounceJob: Job? = null
+
+    // todo toje krutaya fishka
+    private fun debouncedFunction() {
+        debounceJob?.cancel()
+        debounceJob = viewModelScope.launch {
+            delay(DEBOUNCE_TIMEOUT)
+            getWordContent()
+        }
+    }
+
+
     private fun getWordContent() {
         _dictionaryUiState.value = UiState.Loading
+        if (_dictionaryState.value.searchText.isEmpty()) {
+            _dictionaryUiState.value = UiState.Default
+            return
+        }
         viewModelScope.launch {
             val result = getWordUseCase.execute(
                 request = WordRequest(searchText = _dictionaryState.value.searchText),
@@ -58,7 +79,7 @@ class DictionaryViewModel(private val getWordUseCase: GetWordUseCase) : ViewMode
 
     fun onSearchTextChanged(searchText: String) {
         _dictionaryState.update { it.copy(searchText = searchText) }
-        getWordContent()
+        debouncedFunction()
     }
 
     fun onAudioLoading(isLoading: Boolean) {
@@ -99,9 +120,6 @@ class DictionaryViewModel(private val getWordUseCase: GetWordUseCase) : ViewMode
     }
 }
 
-//val phoneticsVariant = remember { mutableIntStateOf(0) }
-//val partOfSpeechVariant = remember { mutableIntStateOf(0) }
-//val expanded = remember { mutableStateOf(false) }
 data class DictionaryState(
     val searchText: String = "",
     val wordContent: List<WordContent>? = null,

@@ -21,7 +21,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -65,6 +67,7 @@ fun QuestionScreen(onNavigate: () -> Unit = {}, viewModel: QuestionViewModel = k
     Column(
         Modifier
             .fillMaxSize()
+            .verticalScroll(state = rememberScrollState())
             .padding(top = 32.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -96,7 +99,9 @@ fun QuestionScreen(onNavigate: () -> Unit = {}, viewModel: QuestionViewModel = k
         GradientProgressIndicator(
             progress = 1f, colors = listOf(
                 Yellow, Primary, Error
-            ), strokeWidth = 4.dp, modifier = Modifier.fillMaxWidth()
+            ), strokeWidth = 4.dp, modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp)
         )
     }
 }

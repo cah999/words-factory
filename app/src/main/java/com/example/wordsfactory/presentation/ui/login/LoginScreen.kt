@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -52,6 +54,7 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
+            .verticalScroll(state = rememberScrollState())
             .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
     ) {
         Image(
@@ -102,6 +105,7 @@ fun LoginScreen(
         }
         Spacer(modifier = Modifier.weight(1f))
         AccentButton(
+            modifier = Modifier.padding(top = 32.dp),
             onClick = {
                 viewModel.login()
             }, isEnabled = loginState.isButtonEnabled, text = stringResource(R.string.log_in)

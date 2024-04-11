@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.Icon
@@ -30,7 +32,9 @@ import com.example.wordsfactory.presentation.ui.utils.AccentButton
 fun FinishScreen(onNavigateBack: () -> Unit, onNavigateAgain: () -> Unit) {
     val correct by remember { mutableIntStateOf(0) }
     val incorrect by remember { mutableIntStateOf(10) }
-    Box {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(state = rememberScrollState())) {
         IconButton(onClick = { onNavigateBack() }) {
             Icon(
                 Icons.AutoMirrored.Filled.KeyboardArrowLeft,
@@ -40,7 +44,7 @@ fun FinishScreen(onNavigateBack: () -> Unit, onNavigateAgain: () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 32.dp),
+                .padding(horizontal = 32.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

@@ -66,7 +66,13 @@ class MainActivity : ComponentActivity() {
 
             WordsFactoryTheme {
                 val windowClass = calculateWindowSizeClass(this)
-                val showNavigationRail = windowClass.widthSizeClass != WindowWidthSizeClass.Compact
+                val showNavigationRail =
+                    windowClass.widthSizeClass != WindowWidthSizeClass.Compact && currentRoute in listOf(
+                        Screen.Dictionary.route,
+                        Screen.Training.route,
+                        Screen.Video.route,
+                        Screen.Profile.route
+                    )
 
                 val state = rememberTransformableState { zoomChange, _, _ ->
                     if (showNavigationRail) {

@@ -75,7 +75,8 @@ fun BottomBar(navController: NavController) {
 @Composable
 fun NavigationRailBar(navController: NavController) {
     androidx.compose.material3.NavigationRail {
-        val screensToDisplay = listOf(Screen.Dictionary, Screen.Training, Screen.Video)
+        val screensToDisplay =
+            listOf(Screen.Dictionary, Screen.Training, Screen.Video, Screen.Profile)
         val currentScreen = navController.currentBackStackEntry?.destination?.route
 
         screensToDisplay.forEach { screen ->
@@ -85,7 +86,8 @@ fun NavigationRailBar(navController: NavController) {
                         Icon(
                             painter = painterResource(resource),
                             contentDescription = null,
-                            tint = if (currentScreen == screen.route) Primary else Grey
+                            tint = if (currentScreen == screen.route) Primary else Grey,
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 },

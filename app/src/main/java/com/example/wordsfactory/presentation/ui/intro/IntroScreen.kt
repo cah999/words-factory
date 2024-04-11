@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,11 +46,11 @@ fun IntroScreen(onNavigation: () -> Unit) {
             return@OnCompleteListener
         }
 
-        // Get new FCM registration token
-        val token = task.result
-
-        // Log and toast
-        Log.d("INTRO", token)
+//        // Get new FCM registration token
+//        val token = task.result
+//
+//        // Log and toast
+//        Log.d("INTRO", token)
     })
     val pages = listOf(
         IntroPage(
@@ -74,6 +76,7 @@ fun IntroScreen(onNavigation: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(state = rememberScrollState())
             .padding(vertical = 24.dp)
     ) {
         Text(
@@ -135,7 +138,7 @@ fun IntroScreen(onNavigation: () -> Unit) {
             text = if (pagerState.currentPage == 2) stringResource(R.string.lets_start) else stringResource(
                 R.string.next
             ),
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)
         )
     }
 }

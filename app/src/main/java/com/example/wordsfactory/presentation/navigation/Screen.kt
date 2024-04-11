@@ -8,6 +8,7 @@ sealed class Screen(val route: String, val title: String, val imageResource: Int
     data object Login : Screen("login", "Login", null)
     data object Registration : Screen("registration", "Registration", null)
     data object Question : Screen("question", "Question", null)
+    data object Finish : Screen("finish", "Finish", null)
     data object Dictionary : Screen(
         "dictionary", "Dictionary",
         R.drawable.courses
@@ -16,4 +17,5 @@ sealed class Screen(val route: String, val title: String, val imageResource: Int
     data object Training : Screen("training", "Training", R.drawable.training)
 
     data object Video : Screen("video", "Video", R.drawable.video)
+    data object Profile : Screen("profile", "Profile", R.drawable.user)
 }

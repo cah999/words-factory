@@ -26,8 +26,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.wordsfactory.ui.theme.Primary
 
-// есть смысл делать сохранение стейта?
-// todo правильно ли state flow используются?
+// todo есть смысл делать сохранение стейта?
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun VideoScreen() {
@@ -78,7 +77,7 @@ fun VideoScreen() {
                     }
                 }
                 settings.javaScriptEnabled = true
-                loadUrl("https://learnenglish.britishcouncil.org/general-english/video-zone")
+                loadUrl(com.example.wordsfactory.common.Constants.VIDEO_URL)
                 webView = this
             }
         }, update = {

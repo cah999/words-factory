@@ -1,7 +1,6 @@
 package com.example.wordsfactory.presentation.ui.dictionary
 
 import android.media.MediaPlayer
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,8 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -69,7 +68,6 @@ fun DictionaryScreenContent(
     ) { page ->
         val phoneticsVariant = dictionaryState.phoneticsVariants[page] ?: 0
         val partOfSpeechVariant = dictionaryState.partOfSpeechVariants[page] ?: 0
-        Log.d("TAG", "DictionaryScreenContent page is $page")
         val wordContent = wordContents[page]
         Column(modifier = modifier) {
             Row(
@@ -96,7 +94,8 @@ fun DictionaryScreenContent(
                         } else {
                             LazyRow(
                                 modifier = Modifier
-                                    .sizeIn(maxWidth = 180.dp)
+                                    .weight(1f, false)
+                                    .wrapContentWidth(align = Alignment.Start)
                                     .clip(RoundedCornerShape(8.dp))
                                     .border(1.dp, Grey, RoundedCornerShape(8.dp))
                             ) {
@@ -196,9 +195,6 @@ fun DictionaryScreenContent(
                             expanded = dictionaryState.dropDownExpanded,
                             modifier = Modifier
                                 .background(White),
-//                                .border(
-//                                    1.dp, Grey, RoundedCornerShape(8.dp)
-//                                ),
                             onDismissRequest = { viewModel.onDropDownExpanded(false) },
                         ) {
                             wordContent.meanings.forEach { meaning ->
@@ -219,7 +215,6 @@ fun DictionaryScreenContent(
                         }
                     }
                 }
-
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
@@ -239,9 +234,13 @@ fun DictionaryScreenContent(
             Spacer(modifier = Modifier.height(16.dp))
             AccentButton(
                 modifier = Modifier.padding(horizontal = 10.dp),
-                onClick = {},
+                onClick = {
+                    if (!dictionaryState.isFavorite)
+                        viewModel.addToDictionary() else viewModel.removeFromDictionary()
+                },
                 isEnabled = true,
-                text = stringResource(R.string.add_to_dictionary)
+                text = if (dictionaryState.isFavorite) stringResource(R.string.remove_from_dictionary) else
+                    stringResource(R.string.add_to_dictionary)
             )
             Spacer(modifier = Modifier.height(8.dp))
         }

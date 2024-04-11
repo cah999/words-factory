@@ -13,5 +13,7 @@ val Secondary = Color(0xFF65AAEA)
 val Success = Color(0xFF5BA092)
 val Warning = Color(0xFFF2A03F)
 val Error = Color(0xFFEF4949)
+val Yellow = Color(0xFFF29F3F)
+val PrimaryLight = Color(0xFFFFF5EE)
 
 val TextColor = Color(0xFF10182B)

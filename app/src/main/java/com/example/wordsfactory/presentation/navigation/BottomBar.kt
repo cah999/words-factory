@@ -2,7 +2,7 @@ package com.example.wordsfactory.presentation.navigation
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +28,7 @@ fun BottomBar(navController: NavController) {
         containerColor = White, contentColor = White,
         modifier = Modifier
             .fillMaxWidth()
-            .height(64.dp)
+            .wrapContentHeight()
             .border(1.dp, Grey, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
 
     ) {

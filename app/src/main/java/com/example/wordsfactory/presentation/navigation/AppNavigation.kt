@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.wordsfactory.presentation.ui.dictionary.DictionaryScreen
+import com.example.wordsfactory.presentation.ui.finish.FinishScreen
 import com.example.wordsfactory.presentation.ui.intro.IntroScreen
 import com.example.wordsfactory.presentation.ui.login.LoginScreen
 import com.example.wordsfactory.presentation.ui.question.QuestionScreen
@@ -64,10 +65,20 @@ fun AppNavigation(
             TrainingScreen(onStartNavigate = { navController.navigate(Screen.Question.route) })
         }
         composable(Screen.Question.route) {
-            QuestionScreen()
+            QuestionScreen(onNavigate = { navController.navigate(Screen.Video.route) })
         }
         composable(Screen.Video.route) {
             VideoScreen()
+        }
+        composable(Screen.Profile.route) {
+            // todo экран профиля
+        }
+        composable(Screen.Finish.route) {
+            FinishScreen(onNavigateBack = {
+                navController.navigate(Screen.Training.route) {
+                    popUpTo(Screen.Finish.route) { inclusive = true }
+                }
+            }, onNavigateAgain = { navController.navigate(Screen.Question.route) })
         }
     }
 }

@@ -1,11 +1,15 @@
 package com.example.wordsfactory.presentation.ui.dictionary
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordsfactory.data.model.WordRequest
 import com.example.wordsfactory.data.service.PhoneticResponse
 import com.example.wordsfactory.data.service.WordResponse
+import com.example.wordsfactory.domain.usecase.AddWordToDictionaryUseCase
+import com.example.wordsfactory.domain.usecase.DeleteFavoriteUseCase
 import com.example.wordsfactory.domain.usecase.GetWordUseCase
+import com.example.wordsfactory.domain.usecase.IsWordFavoriteUseCase
 import com.example.wordsfactory.presentation.ui.utils.UiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -14,9 +18,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-private const val DEBOUNCE_TIMEOUT = 300L // 300 milliseconds
+private const val DEBOUNCE_TIMEOUT = 300L // todo const
 
-class DictionaryViewModel(private val getWordUseCase: GetWordUseCase) : ViewModel() {
+class DictionaryViewModel(
+    private val getWordUseCase: GetWordUseCase,
+    private val addWordToDictionaryUseCase: AddWordToDictionaryUseCase,
+    private val isWordFavoriteUseCase: IsWordFavoriteUseCase,
+    private val deleteFavoriteUseCase: DeleteFavoriteUseCase
+) : ViewModel() {
     private val _dictionaryUiState = MutableStateFlow<UiState>(UiState.Default)
     val dictionaryUiState get() = _dictionaryUiState.asStateFlow()
 
@@ -31,6 +40,7 @@ class DictionaryViewModel(private val getWordUseCase: GetWordUseCase) : ViewMode
         debounceJob = viewModelScope.launch {
             delay(DEBOUNCE_TIMEOUT)
             getWordContent()
+            isWordFavorite(_dictionaryState.value.searchText)
         }
     }
 
@@ -74,6 +84,46 @@ class DictionaryViewModel(private val getWordUseCase: GetWordUseCase) : ViewMode
             }
 
 
+        }
+    }
+
+    private fun isWordFavorite(word: String) {
+        viewModelScope.launch {
+            val isFavorite = isWordFavoriteUseCase.execute(word)
+            Log.d("isFavorite", isFavorite.toString())
+            if (isFavorite != 0) {
+                _dictionaryState.update { it.copy(isFavorite = true) }
+            } else {
+                _dictionaryState.update { it.copy(isFavorite = false) }
+            }
+        }
+    }
+
+    fun removeFromDictionary() {
+        viewModelScope.launch {
+            val wordContent = _dictionaryState.value.wordContent ?: return@launch
+            val wordName = wordContent.first().word
+            deleteFavoriteUseCase.execute(wordName)
+            _dictionaryState.update { it.copy(isFavorite = false) }
+        }
+    }
+
+    fun addToDictionary() {
+        viewModelScope.launch {
+            val wordContent = _dictionaryState.value.wordContent ?: return@launch
+            val wordName = wordContent.first().word
+            val meanings = wordContent.map { word ->
+                word.meanings.map { meaning ->
+                    meaning.definitions.map { definition ->
+                        definition.definition
+                    }
+                }.flatten()
+            }.flatten()
+            addWordToDictionaryUseCase.execute(
+                name = wordName,
+                meanings = meanings
+            )
+            _dictionaryState.update { it.copy(isFavorite = true) }
         }
     }
 
@@ -123,6 +173,7 @@ class DictionaryViewModel(private val getWordUseCase: GetWordUseCase) : ViewMode
 data class DictionaryState(
     val searchText: String = "",
     val wordContent: List<WordContent>? = null,
+    val isFavorite: Boolean = false,
     val isAudioLoading: Boolean = false,
     val phoneticsVariants: Map<Int, Int> = mapOf(),
     val partOfSpeechVariants: Map<Int, Int> = mapOf(),

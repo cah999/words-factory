@@ -54,7 +54,6 @@ import org.koin.compose.KoinApplication
 fun TrainingScreen(onStartNavigate: () -> Unit, viewModel: TrainingViewModel = koinViewModel()) {
     val trainingState by viewModel.trainingState.collectAsStateWithLifecycle()
     val text = stringResource(R.string.training_screen).format(trainingState.count)
-
     val annotatedString = buildAnnotatedString {
         withStyle(SpanStyle(color = Dark)) {
             append(text.substring(0, text.indexOf(trainingState.count.toString())))
@@ -66,37 +65,36 @@ fun TrainingScreen(onStartNavigate: () -> Unit, viewModel: TrainingViewModel = k
             append(text.substring(text.indexOf(trainingState.count.toString()) + trainingState.count.toString().length))
         }
     }
-    Box(
+    Column(
+        verticalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+            .padding(bottom = 16.dp, start = 26.dp, end = 26.dp)
             .fillMaxSize()
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.align(Alignment.Center)
-        ) {
-            Text(
-                text = annotatedString,
-                style = MaterialTheme.typography.headlineLarge,
-                color = Dark,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            Text(
-                text = stringResource(R.string.start_training),
-                style = MaterialTheme.typography.headlineLarge,
-                color = Dark
-            )
-        }
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = annotatedString,
+            style = MaterialTheme.typography.headlineLarge,
+            color = Dark,
+            textAlign = TextAlign.Center,
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+        Text(
+            text = stringResource(R.string.start_training),
+            style = MaterialTheme.typography.headlineLarge,
+            color = Dark,
+        )
+        Spacer(modifier = Modifier.weight(1f))
         if (!trainingState.timerStarted) {
             AccentButton(
-                modifier = Modifier.align(Alignment.BottomCenter), onClick = {
+                modifier = Modifier, onClick = {
                     viewModel.onTimerStartedChanged(true)
                 }, isEnabled = true, text = stringResource(R.string.start)
             )
         } else {
             InfiniteProgressBar(
-                modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 64.dp),
+                modifier = Modifier.padding(bottom = 64.dp),
                 onFinishedNavigate = onStartNavigate,
                 time = Constants.TIMER_TIME
             )
@@ -156,7 +154,7 @@ fun InfiniteProgressBar(modifier: Modifier = Modifier, onFinishedNavigate: () ->
                 alpha = if (countdownNumber == 0) 0f else 1f
             ),
             strokeWidth = 8.dp,
-            strokeCap  = StrokeCap.Round,
+            strokeCap = StrokeCap.Round,
         )
         Text(
             text = if (countdownNumber == 0) stringResource(id = R.string.go) else countdownNumber.toString(),

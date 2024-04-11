@@ -8,6 +8,8 @@ class Constants {
         const val DEFAULT_PASSWORD = "123456"
         const val BASE_URL = "https://api.dictionaryapi.dev/api/v2/"
 
-        const val TIMER_TIME = 5
+        const val TIMER_TIME = 1 // todo 5
+        const val CUTOUT = "cutout"
+        const val VIDEO_URL = "https://learnenglish.britishcouncil.org/general-english/video-zone"
     }
 }

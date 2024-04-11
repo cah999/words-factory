@@ -27,7 +27,12 @@ val appModule = module {
     }
 
     viewModel<DictionaryViewModel> {
-        DictionaryViewModel(getWordUseCase = get())
+        DictionaryViewModel(
+            getWordUseCase = get(),
+            addWordToDictionaryUseCase = get(),
+            isWordFavoriteUseCase = get(),
+            deleteFavoriteUseCase = get()
+        )
     }
 
     viewModel<TrainingViewModel> {

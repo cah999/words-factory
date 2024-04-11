@@ -27,4 +27,7 @@
     <string name="start_training">Start the Training?</string>
     <string name="start">Start</string>
     <string name="go">GO!</string>
+    <string name="prefs">PREFS</string>
+    <string name="cutout">CUTOUT</string>
+    <string name="remove_from_dictionary">Remove from Dictionary</string>
 </resources>

@@ -15,6 +15,12 @@ interface WordDao {
     @Query("SELECT * FROM WordTable")
     suspend fun getAll(): List<WordTable>
 
+    @Query("SELECT COUNT(*) FROM WordTable")
+    suspend fun getWordsCount(): Int
+
+    @Query("SELECT * FROM WordTable ORDER BY count ASC LIMIT :count")
+    suspend fun getWorseWords(count: Int): List<WordTable>
+
     @Insert
     suspend fun insertAll(vararg firstTable: WordTable)
 

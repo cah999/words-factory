@@ -47,6 +47,8 @@ class DictionaryViewModel(
 
     private fun getWordContent() {
         _dictionaryUiState.value = UiState.Loading
+        onPhoneticsVariantReset()
+        onPartOfSpeechVariantReset()
         if (_dictionaryState.value.searchText.isEmpty()) {
             _dictionaryUiState.value = UiState.Default
             return
@@ -65,7 +67,12 @@ class DictionaryViewModel(
                         WordContent(word = word.word,
                             phonetics = mergedPhonetics.phonetics?.map { phonetic ->
                                 Phonetic(
-                                    transcription = "[${phonetic?.text}]", voice = phonetic?.audio
+                                    transcription = if (phonetic?.text != null) {
+                                        "[${phonetic.text}]"
+                                    } else {
+                                        null
+                                    },
+                                    voice = phonetic?.audio
                                 )
                             },
                             meanings = word.meanings.map { meaning ->
@@ -80,6 +87,7 @@ class DictionaryViewModel(
                     })
                 }
             } else {
+                // todo так можно ?
                 _dictionaryState.update { it.copy(wordContent = null) }
             }
 
@@ -148,12 +156,25 @@ class DictionaryViewModel(
         }
     }
 
-    fun onDropDownExpanded(expanded: Boolean) {
-        _dictionaryState.update { it.copy(dropDownExpanded = expanded) }
+    private fun onPartOfSpeechVariantReset() {
+        _dictionaryState.update {
+            it.copy(partOfSpeechVariants = mapOf())
+        }
+    }
+
+    private fun onPhoneticsVariantReset() {
+        _dictionaryState.update {
+            it.copy(phoneticsVariants = mapOf())
+        }
+    }
+
+    fun onDropDownExpanded(page: Int, expanded: Boolean) {
+        _dictionaryState.update { it.copy(dropDownExpanded = it.dropDownExpanded + (page to expanded)) }
     }
 
     private fun mergePhonetics(wordResponse: WordResponse): WordResponse {
         // todo krutaya fishka tak to )
+        // https://api.dictionaryapi.dev/api/v2/entries/en/serve
         val phonetics = wordResponse.phonetics ?: return wordResponse
         val mergedPhonetics = phonetics.fold(mutableListOf<PhoneticResponse>()) { acc, phonetic ->
             if (phonetic != null) {
@@ -177,5 +198,5 @@ data class DictionaryState(
     val isAudioLoading: Boolean = false,
     val phoneticsVariants: Map<Int, Int> = mapOf(),
     val partOfSpeechVariants: Map<Int, Int> = mapOf(),
-    val dropDownExpanded: Boolean = false
+    val dropDownExpanded: Map<Int, Boolean> = mapOf()
 )

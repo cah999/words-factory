@@ -1,6 +1,7 @@
 package com.example.wordsfactory.presentation.ui.dictionary
 
 import android.media.MediaPlayer
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -85,12 +86,15 @@ fun DictionaryScreenContent(
                     if (wordContent.phonetics.isNotEmpty()) {
                         Spacer(modifier = Modifier.width(16.dp))
                         if (wordContent.phonetics.size == 1) {
-                            Text(
-                                text = wordContent.phonetics[0].transcription ?: "",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = Primary,
-                                modifier = Modifier.padding(top = 5.dp)
-                            )
+                            Log.d("DictionaryScreenContent", "transcription: ${wordContent.phonetics[0].transcription}")
+//                            if (!wordContent.phonetics[0].transcription.isNullOrBlank()) {
+                                Text(
+                                    text = wordContent.phonetics[0].transcription ?: "",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Primary,
+                                    modifier = Modifier.padding(top = 5.dp)
+                                )
+//                            }
                         } else {
                             LazyRow(
                                 modifier = Modifier
@@ -171,6 +175,7 @@ fun DictionaryScreenContent(
                     color = DarkGrey,
                     modifier = if (wordContent.meanings.size > 1) Modifier.clickable {
                         viewModel.onDropDownExpanded(
+                            page,
                             true
                         )
                     } else Modifier
@@ -179,7 +184,7 @@ fun DictionaryScreenContent(
                     Box(contentAlignment = Alignment.CenterStart) {
                         Spacer(modifier = Modifier.width(4.dp))
                         IconButton(
-                            onClick = { viewModel.onDropDownExpanded(true) },
+                            onClick = { viewModel.onDropDownExpanded(page, true) },
                             modifier = Modifier
                                 .size(16.dp)
                                 .padding(top = 2.dp)
@@ -192,10 +197,10 @@ fun DictionaryScreenContent(
                         }
 
                         DropdownMenu(
-                            expanded = dictionaryState.dropDownExpanded,
+                            expanded = dictionaryState.dropDownExpanded[page] ?: false,
                             modifier = Modifier
                                 .background(White),
-                            onDismissRequest = { viewModel.onDropDownExpanded(false) },
+                            onDismissRequest = { viewModel.onDropDownExpanded(page, false) },
                         ) {
                             wordContent.meanings.forEach { meaning ->
                                 DropdownMenuItem(text = {
@@ -205,7 +210,7 @@ fun DictionaryScreenContent(
                                         color = DarkGrey
                                     )
                                 }, onClick = {
-                                    viewModel.onDropDownExpanded(false)
+                                    viewModel.onDropDownExpanded(page, false)
                                     viewModel.onPartOfSpeechVariantChanged(
                                         page,
                                         wordContent.meanings.indexOf(meaning),

@@ -11,5 +11,6 @@ class Constants {
         const val TIMER_TIME = 1 // todo 5
         const val CUTOUT = "cutout"
         const val VIDEO_URL = "https://learnenglish.britishcouncil.org/general-english/video-zone"
+        const val QUESTIONS_COUNT = 10
     }
 }

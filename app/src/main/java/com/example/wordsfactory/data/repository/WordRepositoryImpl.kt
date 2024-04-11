@@ -5,12 +5,28 @@ import com.example.wordsfactory.data.database.WordDao
 import com.example.wordsfactory.data.model.Meaning
 import com.example.wordsfactory.data.model.WordTable
 import com.example.wordsfactory.domain.repository.WordRepository
+import com.example.wordsfactory.presentation.ui.question.Answer
+import com.example.wordsfactory.presentation.ui.question.Question
 
 class WordRepositoryImpl(
     private val wordDao: WordDao, private val meaningDao: MeaningDao
 ) : WordRepository {
     override suspend fun getWords() {
         wordDao.getAll()
+    }
+
+    override suspend fun getQuestions(count: Int): List<Question> {
+        val allWords = wordDao.getAll()
+        return wordDao.getWorseWords(count).map { word ->
+            val meanings = meaningDao.getMeanings(word.id)
+            val incorrectWords = allWords.filter { it.id != word.id }.shuffled().take(2)
+            val answers = incorrectWords.map { Answer(it.name, false) } + Answer(word.name, true)
+            Question(meanings.random().meaning, answers.shuffled())
+        }
+    }
+
+    override suspend fun getWordsCount(): Int {
+        return wordDao.getWordsCount()
     }
 
     override suspend fun getWord(name: String): Int {

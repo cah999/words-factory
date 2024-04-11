@@ -1,7 +1,6 @@
 package com.example.wordsfactory.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -101,7 +100,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Scaffold(bottomBar = {
                         when (currentRoute) {
-                            Screen.Dictionary.route, Screen.Training.route, Screen.Video.route -> {
+                            Screen.Dictionary.route, Screen.Training.route, Screen.Video.route, Screen.Profile.route -> {
                                 if (!showNavigationRail) {
                                     BottomBar(navController = navController)
                                 }
@@ -110,7 +109,6 @@ class MainActivity : ComponentActivity() {
                             else -> {}
                         }
                     }) {
-                        Log.d("MainActivity", "padding: $it")
                         Box(
                             modifier = modifier
                                 .padding(it)

@@ -10,4 +10,5 @@ interface AuthRepository {
     fun logout()
     fun isUserLoggedIn(): Boolean
     fun updateProfile(user: User)
+    fun getCurrentUser(): User?
 }

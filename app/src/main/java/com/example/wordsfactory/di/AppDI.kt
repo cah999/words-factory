@@ -3,6 +3,8 @@ package com.example.wordsfactory.di
 import com.example.wordsfactory.presentation.ui.dictionary.DictionaryViewModel
 import com.example.wordsfactory.presentation.ui.intro.IntroViewModel
 import com.example.wordsfactory.presentation.ui.login.LoginViewModel
+import com.example.wordsfactory.presentation.ui.profile.ProfileViewModel
+import com.example.wordsfactory.presentation.ui.question.QuestionViewModel
 import com.example.wordsfactory.presentation.ui.signup.SignUpViewModel
 import com.example.wordsfactory.presentation.ui.splash.SplashViewModel
 import com.example.wordsfactory.presentation.ui.training.TrainingViewModel
@@ -36,6 +38,17 @@ val appModule = module {
     }
 
     viewModel<TrainingViewModel> {
-        TrainingViewModel()
+        TrainingViewModel(getWordsCountUseCase = get())
+    }
+
+    viewModel<QuestionViewModel> {
+        QuestionViewModel(getQuestionsUseCase = get())
+    }
+
+    viewModel<ProfileViewModel> {
+        ProfileViewModel(
+            logoutUseCase = get(),
+            getCurrentUserUseCase = get()
+        )
     }
 }

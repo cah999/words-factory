@@ -1,25 +1,38 @@
 package com.example.wordsfactory.presentation.ui.training
 
 import androidx.lifecycle.ViewModel
-import com.example.wordsfactory.presentation.ui.utils.UiState
+import androidx.lifecycle.viewModelScope
+import com.example.wordsfactory.domain.usecase.GetWordsCountUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class TrainingViewModel : ViewModel() {
+class TrainingViewModel(
+    private val getWordsCountUseCase: GetWordsCountUseCase
+) : ViewModel() {
 
-    private val _trainingUiState = MutableStateFlow<UiState>(UiState.Default)
-    val trainingUiState get() = _trainingUiState.asStateFlow()
+    init {
+        getWordsCount()
+    }
 
 
     private val _trainingState = MutableStateFlow(TrainingState())
     val trainingState = _trainingState.asStateFlow()
 
-    fun onTimerRemainingTimeChanged(timerRemainingTime: Int) {
-        _trainingState.value = _trainingState.value.copy(timerRemainingTime = timerRemainingTime)
+    fun onTimerStartedChanged(timerStarted: Boolean) {
+        _trainingState.update { it.copy(timerStarted = timerStarted) }
     }
 
-    fun onTimerStartedChanged(timerStarted: Boolean) {
-        _trainingState.value = _trainingState.value.copy(timerStarted = timerStarted)
+    private fun onCountChanged(count: Int) {
+        _trainingState.update { it.copy(count = count) }
+    }
+
+    private fun getWordsCount() {
+        viewModelScope.launch {
+            val result = getWordsCountUseCase.execute()
+            onCountChanged(result)
+        }
     }
 }
 

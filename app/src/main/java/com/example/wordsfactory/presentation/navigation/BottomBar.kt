@@ -2,6 +2,7 @@ package com.example.wordsfactory.presentation.navigation
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -32,7 +33,8 @@ fun BottomBar(navController: NavController) {
             .border(1.dp, Grey, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
 
     ) {
-        val screensToDisplay = listOf(Screen.Dictionary, Screen.Training, Screen.Video)
+        val screensToDisplay =
+            listOf(Screen.Dictionary, Screen.Training, Screen.Video, Screen.Profile)
         val currentScreen = navController.currentBackStackEntry?.destination?.route
 
         screensToDisplay.forEach { screen ->
@@ -42,7 +44,8 @@ fun BottomBar(navController: NavController) {
                         Icon(
                             painter = painterResource(resource),
                             contentDescription = null,
-                            tint = if (currentScreen == screen.route) Primary else Grey
+                            tint = if (currentScreen == screen.route) Primary else Grey,
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 },

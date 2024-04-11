@@ -46,6 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.wordsfactory.ui.theme.Dark
 import com.example.wordsfactory.ui.theme.DarkGrey
 import com.example.wordsfactory.ui.theme.Error
@@ -54,34 +55,40 @@ import com.example.wordsfactory.ui.theme.Primary
 import com.example.wordsfactory.ui.theme.PrimaryLight
 import com.example.wordsfactory.ui.theme.Yellow
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
 
 // todo экран профиля
 @Composable
-fun QuestionScreen(onNavigate: () -> Unit = {}) {
+fun QuestionScreen(onNavigate: () -> Unit = {}, viewModel: QuestionViewModel = koinViewModel()) {
+    val questionState by viewModel.dictionaryState.collectAsStateWithLifecycle()
 
-    val answers = listOf(
-        Answer("A", "Cooking"),
-        Answer("B", "Smiling"),
-        Answer("C", "Freezing"),
-    )
     Column(
         Modifier
             .fillMaxSize()
             .padding(top = 32.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "1 of 10", style = MaterialTheme.typography.bodyMedium, color = DarkGrey)
+        Text(
+            text = "${questionState.currentQuestionCounter} of ${questionState.totalQuestions}",
+            style = MaterialTheme.typography.bodyMedium,
+            color = DarkGrey
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "The practice of skill of preparing food by combining, mixing, and heating ingredients.",
+            text = questionState.currentQuestion.question,
             style = MaterialTheme.typography.headlineLarge,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(16.dp))
-        answers.forEach { answer ->
+        questionState.currentQuestion.answers.forEachIndexed { index, answer ->
             AnswerBox(
-                modifier = Modifier.padding(8.dp), answer = answer, onClick = {
-                    onNavigate()
+                modifier = Modifier.padding(8.dp),
+                answer = answer,
+                answerVariant = viewModel.getAnswerVariant(index),
+                onClick = {
+                    if (!viewModel.onNextQuestion()) {
+                        onNavigate()
+                    }
                 }
             )
         }
@@ -95,13 +102,19 @@ fun QuestionScreen(onNavigate: () -> Unit = {}) {
 }
 
 @Composable
-fun AnswerBox(modifier: Modifier = Modifier, answer: Answer, onClick: () -> Unit = {}) {
+fun AnswerBox(
+    modifier: Modifier = Modifier,
+    answer: Answer,
+    answerVariant: String,
+    onClick: () -> Unit = {}
+) {
     var clicked by remember { mutableStateOf(false) }
 
     LaunchedEffect(clicked) {
         if (clicked) {
             delay(1000)
             onClick()
+            clicked = false
         }
     }
     Box(
@@ -122,7 +135,7 @@ fun AnswerBox(modifier: Modifier = Modifier, answer: Answer, onClick: () -> Unit
     ) {
         Row(Modifier.padding(24.dp)) {
             Text(
-                text = answer.variant + ".",
+                text = "$answerVariant.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Dark
             )
@@ -133,6 +146,7 @@ fun AnswerBox(modifier: Modifier = Modifier, answer: Answer, onClick: () -> Unit
         }
     }
 }
+
 
 @Composable
 fun GradientProgressIndicator(
@@ -193,14 +207,12 @@ fun Modifier.animatedBorder(
             }
             .background(color = backgroundColor, shape = shape)
     }
-    return this.border(1.dp, Grey, shape)
+    return this
+        .border(1.dp, Grey, shape)
+        .clip(shape)
 
 }
 
-data class Answer(
-    val variant: String,
-    val text: String,
-)
 
 @Preview
 @Composable

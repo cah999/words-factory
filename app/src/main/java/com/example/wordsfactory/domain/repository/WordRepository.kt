@@ -1,7 +1,11 @@
 package com.example.wordsfactory.domain.repository
 
+import com.example.wordsfactory.presentation.ui.question.Question
+
 interface WordRepository {
     suspend fun getWords()
+    suspend fun getQuestions(count: Int): List<Question>
+    suspend fun getWordsCount(): Int
     suspend fun getWord(name: String): Int
     suspend fun getWordMeanings(name: String)
     suspend fun addWord(name: String, meanings: List<String>)

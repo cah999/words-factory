@@ -61,4 +61,13 @@ class AuthRepositoryImpl(
     override fun isUserLoggedIn(): Boolean {
         return auth.currentUser != null
     }
+
+    override fun getCurrentUser(): User? {
+        val currentUser = Firebase.auth.currentUser
+        return if (currentUser != null) {
+            User(currentUser.uid, currentUser.displayName ?: "")
+        } else {
+            null
+        }
+    }
 }

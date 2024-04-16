@@ -32,10 +32,13 @@ import com.example.wordsfactory.presentation.ui.utils.AccentButton
 fun FinishScreen(onNavigateBack: () -> Unit, onNavigateAgain: () -> Unit) {
     val correct by remember { mutableIntStateOf(0) }
     val incorrect by remember { mutableIntStateOf(10) }
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(state = rememberScrollState())) {
-        IconButton(onClick = { onNavigateBack() }) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(state = rememberScrollState())
+    ) {
+        IconButton(onClick = { onNavigateBack() }, modifier = Modifier.align(Alignment.TopStart)) {
             Icon(
                 Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                 contentDescription = "",
@@ -43,7 +46,6 @@ fun FinishScreen(onNavigateBack: () -> Unit, onNavigateAgain: () -> Unit) {
         }
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(horizontal = 32.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center

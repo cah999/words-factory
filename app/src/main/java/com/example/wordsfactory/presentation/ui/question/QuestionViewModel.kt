@@ -35,13 +35,21 @@ class QuestionViewModel(
         _questionState.update { it.copy(totalQuestions = totalQuestions) }
     }
 
+    fun onTimerProgressChanged(progress: Float) {
+        _questionState.update { it.copy(timerProgress = progress) }
+    }
+
+    fun onAnswerClickedChanged(answerClicked: Boolean) {
+        _questionState.update { it.copy(answerClicked = answerClicked) }
+    }
+
     private fun getQuestions() {
         viewModelScope.launch {
             val questions = getQuestionsUseCase.execute(count = Constants.QUESTIONS_COUNT)
             onQuestionsChanged(questions)
             onTotalQuestionsChanged(questions.size)
             onCurrentQuestionStateChanged(questions.first())
-
+            onTimerProgressChanged(1f)
         }
     }
 
@@ -58,11 +66,14 @@ class QuestionViewModel(
     // test if < 3 words
     // todo add placeholder if no words
     fun onNextQuestion(): Boolean {
+        onTimerProgressChanged(0f)
+        onAnswerClickedChanged(false)
         val currentQuestionCounter = _questionState.value.currentQuestionCounter
         val questions = _questionState.value.questions
         if (currentQuestionCounter < questions.size) {
             onCurrentQuestionStateChanged(questions[currentQuestionCounter])
             onCurrentQuestionCounterChanged(currentQuestionCounter + 1)
+            onTimerProgressChanged(1f)
             return true
         }
         return false
@@ -75,6 +86,8 @@ data class QuestionState(
     val currentQuestion: Question = Question("", emptyList()),
     val currentQuestionCounter: Int = 1,
     val totalQuestions: Int = 0,
+    val timerProgress: Float = 0f,
+    val answerClicked: Boolean = false,
 )
 
 data class Answer(

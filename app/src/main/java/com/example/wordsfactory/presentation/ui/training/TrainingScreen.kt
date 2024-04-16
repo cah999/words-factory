@@ -102,7 +102,7 @@ fun TrainingScreen(onStartNavigate: () -> Unit, viewModel: TrainingViewModel = k
     }
 }
 
-// todo эти переменные должны быть в viewModel?
+// todo эти переменные должны быть в viewModel da
 @Composable
 fun InfiniteProgressBar(modifier: Modifier = Modifier, onFinishedNavigate: () -> Unit, time: Int) {
     var targetProgress by remember { mutableFloatStateOf(0f) }

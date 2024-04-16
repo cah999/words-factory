@@ -20,9 +20,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = koinViewModel(), onLogout: () -> Unit) {
-    // todo logout button
     // todo statistics
-    // todo user info
     val state by viewModel.profileState.collectAsStateWithLifecycle()
 
     Column(

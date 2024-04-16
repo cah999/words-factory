@@ -86,15 +86,16 @@ fun DictionaryScreenContent(
                     if (wordContent.phonetics.isNotEmpty()) {
                         Spacer(modifier = Modifier.width(16.dp))
                         if (wordContent.phonetics.size == 1) {
-                            Log.d("DictionaryScreenContent", "transcription: ${wordContent.phonetics[0].transcription}")
-//                            if (!wordContent.phonetics[0].transcription.isNullOrBlank()) {
-                                Text(
-                                    text = wordContent.phonetics[0].transcription ?: "",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = Primary,
-                                    modifier = Modifier.padding(top = 5.dp)
-                                )
-//                            }
+                            Log.d(
+                                "DictionaryScreenContent",
+                                "transcription: ${wordContent.phonetics[0].transcription}"
+                            )
+                            Text(
+                                text = wordContent.phonetics[0].transcription ?: "",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Primary,
+                                modifier = Modifier.padding(top = 5.dp)
+                            )
                         } else {
                             LazyRow(
                                 modifier = Modifier

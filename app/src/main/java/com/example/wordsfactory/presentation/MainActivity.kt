@@ -35,7 +35,6 @@ import com.example.wordsfactory.ui.theme.WordsFactoryTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 // todo floating button on dictionary screen
-// todo спросить оставить ли cutout??
 class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)

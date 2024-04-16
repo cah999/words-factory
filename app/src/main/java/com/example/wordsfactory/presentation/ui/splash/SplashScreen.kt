@@ -95,7 +95,6 @@ fun SplashScreen(
 }
 
 
-//todo move to another file
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun FirebaseMessagingNotificationPermissionDialog(

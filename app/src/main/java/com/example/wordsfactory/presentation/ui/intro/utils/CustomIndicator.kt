@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.Dp
 import com.example.wordsfactory.ui.theme.Grey
 import com.example.wordsfactory.ui.theme.Secondary
 
-// todo он находится не по центру =(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CustomIndicator(

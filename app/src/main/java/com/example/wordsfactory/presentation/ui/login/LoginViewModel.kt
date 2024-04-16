@@ -40,7 +40,6 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     }
 }
 
-// todo replace to const empty
 data class LoginState(
     val emailText: String = Constants.DEFAULT_LOGIN,
     val passwordText: String = Constants.DEFAULT_PASSWORD,

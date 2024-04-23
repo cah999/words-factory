@@ -2,11 +2,13 @@ package com.example.wordsfactory.di
 
 import com.example.wordsfactory.domain.usecase.AddWordToDictionaryUseCase
 import com.example.wordsfactory.domain.usecase.CheckUserAuthUseCase
+import com.example.wordsfactory.domain.usecase.DecreaseWordCounterUseCase
 import com.example.wordsfactory.domain.usecase.DeleteFavoriteUseCase
 import com.example.wordsfactory.domain.usecase.GetCurrentUserUseCase
 import com.example.wordsfactory.domain.usecase.GetQuestionsUseCase
 import com.example.wordsfactory.domain.usecase.GetWordUseCase
 import com.example.wordsfactory.domain.usecase.GetWordsCountUseCase
+import com.example.wordsfactory.domain.usecase.IncreaseWordCounterUseCase
 import com.example.wordsfactory.domain.usecase.IsWordFavoriteUseCase
 import com.example.wordsfactory.domain.usecase.LoginUseCase
 import com.example.wordsfactory.domain.usecase.LogoutUseCase
@@ -59,4 +61,11 @@ val domainModule = module {
         LogoutUseCase(authRepository = get())
     }
 
+    factory<IncreaseWordCounterUseCase> {
+        IncreaseWordCounterUseCase(wordRepository = get())
+    }
+
+    factory<DecreaseWordCounterUseCase> {
+        DecreaseWordCounterUseCase(wordRepository = get())
+    }
 }

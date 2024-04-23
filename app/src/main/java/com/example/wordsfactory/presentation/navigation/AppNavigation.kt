@@ -2,8 +2,10 @@ package com.example.wordsfactory.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.wordsfactory.presentation.ui.dictionary.DictionaryScreen
 import com.example.wordsfactory.presentation.ui.finish.FinishScreen
 import com.example.wordsfactory.presentation.ui.intro.IntroScreen
@@ -63,10 +65,16 @@ fun AppNavigation(
             DictionaryScreen()
         }
         composable(Screen.Training.route) {
-            TrainingScreen(onStartNavigate = { navController.navigate(Screen.Question.route) })
+            TrainingScreen(onStartNavigate = {
+                navController.navigate(Screen.Question.route)
+            })
         }
         composable(Screen.Question.route) {
-            QuestionScreen(onNavigate = { navController.navigate(Screen.Finish.route) })
+            QuestionScreen(onNavigate = { correctCount, totalCount ->
+                navController.navigate("${Screen.Finish.route}/$correctCount/$totalCount") {
+                    popUpTo(Screen.Question.route) { inclusive = true }
+                }
+            })
         }
         composable(Screen.Video.route) {
             VideoScreen()
@@ -78,12 +86,23 @@ fun AppNavigation(
                 }
             })
         }
-        composable(Screen.Finish.route) {
-            FinishScreen(onNavigateBack = {
-                navController.navigate(Screen.Training.route) {
-                    popUpTo(Screen.Finish.route) { inclusive = true }
-                }
-            }, onNavigateAgain = { navController.navigate(Screen.Question.route) })
+        composable(
+            "${Screen.Finish.route}/{correctCount}/{totalCount}",
+            arguments = listOf(
+                navArgument("correctCount") { type = NavType.IntType },
+                navArgument("totalCount") { type = NavType.IntType }
+            )
+        ) {
+            val correctCount = it.arguments?.getInt("correctCount") ?: 0
+            val totalCount = it.arguments?.getInt("totalCount") ?: 0
+            FinishScreen(
+                correctCount = correctCount,
+                totalCount = totalCount,
+                onNavigateBack = {
+                    navController.navigate(Screen.Training.route) {
+                        popUpTo(Screen.Finish.route) { inclusive = true }
+                    }
+                }, onNavigateAgain = { navController.navigate(Screen.Question.route) })
         }
     }
 }

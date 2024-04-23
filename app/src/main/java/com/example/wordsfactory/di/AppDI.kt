@@ -42,7 +42,11 @@ val appModule = module {
     }
 
     viewModel<QuestionViewModel> {
-        QuestionViewModel(getQuestionsUseCase = get())
+        QuestionViewModel(
+            getQuestionsUseCase = get(),
+            increaseWordCounterUseCase = get(),
+            decreaseWordCounterUseCase = get()
+        )
     }
 
     viewModel<ProfileViewModel> {

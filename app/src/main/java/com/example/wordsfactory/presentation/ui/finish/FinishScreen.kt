@@ -17,9 +17,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -29,9 +26,12 @@ import com.example.wordsfactory.R
 import com.example.wordsfactory.presentation.ui.utils.AccentButton
 
 @Composable
-fun FinishScreen(onNavigateBack: () -> Unit, onNavigateAgain: () -> Unit) {
-    val correct by remember { mutableIntStateOf(0) }
-    val incorrect by remember { mutableIntStateOf(10) }
+fun FinishScreen(
+    correctCount: Int,
+    totalCount: Int,
+    onNavigateBack: () -> Unit,
+    onNavigateAgain: () -> Unit
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -54,8 +54,11 @@ fun FinishScreen(onNavigateBack: () -> Unit, onNavigateAgain: () -> Unit) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(text = "Training is finished", style = MaterialTheme.typography.headlineLarge)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Correct: $correct", style = MaterialTheme.typography.bodyMedium)
-            Text(text = "Incorrect: $incorrect", style = MaterialTheme.typography.bodyMedium)
+            Text(text = "Correct: $correctCount", style = MaterialTheme.typography.bodyMedium)
+            Text(
+                text = "Incorrect: ${totalCount - correctCount}",
+                style = MaterialTheme.typography.bodyMedium
+            )
             Spacer(modifier = Modifier.height(32.dp))
             AccentButton(onClick = { onNavigateAgain() }, isEnabled = true, text = "Again")
         }
@@ -65,5 +68,5 @@ fun FinishScreen(onNavigateBack: () -> Unit, onNavigateAgain: () -> Unit) {
 @Preview
 @Composable
 private fun FinishScreenPreview() {
-    FinishScreen({}, {})
+    FinishScreen(0, 10, {}, {})
 }

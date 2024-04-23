@@ -51,4 +51,12 @@ class WordRepositoryImpl(
     override suspend fun deleteWord(name: String) {
         wordDao.deleteWord(name)
     }
+
+    override suspend fun increaseWordCounter(word: String) {
+        wordDao.increaseWordCounter(word)
+    }
+
+    override suspend fun decreaseWordCounter(word: String) {
+        wordDao.decreaseWordCounter(word)
+    }
 }

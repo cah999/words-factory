@@ -1,16 +1,22 @@
 package com.example.wordsfactory.presentation.ui.question
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordsfactory.common.Constants
+import com.example.wordsfactory.domain.usecase.DecreaseWordCounterUseCase
 import com.example.wordsfactory.domain.usecase.GetQuestionsUseCase
+import com.example.wordsfactory.domain.usecase.IncreaseWordCounterUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+// todo placeholder for training
 class QuestionViewModel(
     private val getQuestionsUseCase: GetQuestionsUseCase,
+    private val increaseWordCounterUseCase: IncreaseWordCounterUseCase,
+    private val decreaseWordCounterUseCase: DecreaseWordCounterUseCase
 ) : ViewModel() {
     private val _questionState = MutableStateFlow(QuestionState())
     val dictionaryState = _questionState.asStateFlow()
@@ -43,9 +49,18 @@ class QuestionViewModel(
         _questionState.update { it.copy(answerClicked = answerClicked) }
     }
 
+    fun onChosenAnswerChanged(answer: Answer) {
+        _questionState.update { it.copy(chosenAnswer = answer) }
+    }
+
+    private fun onCorrectQuestionsChanged(correctQuestions: Int) {
+        _questionState.update { it.copy(correctQuestions = correctQuestions) }
+    }
+
     private fun getQuestions() {
         viewModelScope.launch {
             val questions = getQuestionsUseCase.execute(count = Constants.QUESTIONS_COUNT)
+            Log.d("QuestionViewModel", "questions: $questions")
             onQuestionsChanged(questions)
             onTotalQuestionsChanged(questions.size)
             onCurrentQuestionStateChanged(questions.first())
@@ -62,12 +77,34 @@ class QuestionViewModel(
         }
     }
 
+    private suspend fun increaseWordCounter() {
+        increaseWordCounterUseCase.execute(_questionState.value.chosenAnswer?.text ?: "")
+    }
+
+    private suspend fun decreaseWordCounter() {
+        decreaseWordCounterUseCase.execute(_questionState.value.chosenAnswer?.text ?: "")
+    }
+
     // todo blur answer word in meaning !!
     // test if < 3 words
     // todo add placeholder if no words
-    fun onNextQuestion(): Boolean {
+    fun onNextQuestion(): Boolean? {
+        if (_questionState.value.answerClicked) {
+            if (_questionState.value.chosenAnswer !in _questionState.value.currentQuestion.answers) {
+                return null
+            }
+            if (_questionState.value.chosenAnswer?.isCorrect == true) {
+                onCorrectQuestionsChanged(_questionState.value.correctQuestions + 1)
+                viewModelScope.launch {
+                    increaseWordCounter()
+                }
+            } else {
+                viewModelScope.launch {
+                    decreaseWordCounter()
+                }
+            }
+        }
         onTimerProgressChanged(0f)
-        onAnswerClickedChanged(false)
         val currentQuestionCounter = _questionState.value.currentQuestionCounter
         val questions = _questionState.value.questions
         if (currentQuestionCounter < questions.size) {
@@ -85,9 +122,11 @@ data class QuestionState(
     val questions: List<Question> = emptyList(),
     val currentQuestion: Question = Question("", emptyList()),
     val currentQuestionCounter: Int = 1,
+    val correctQuestions: Int = 0,
     val totalQuestions: Int = 0,
     val timerProgress: Float = 0f,
     val answerClicked: Boolean = false,
+    val chosenAnswer: Answer? = null,
 )
 
 data class Answer(

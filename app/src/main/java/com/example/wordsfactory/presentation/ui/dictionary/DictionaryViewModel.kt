@@ -71,8 +71,7 @@ class DictionaryViewModel(
                                         "[${phonetic.text}]"
                                     } else {
                                         null
-                                    },
-                                    voice = phonetic?.audio
+                                    }, voice = phonetic?.audio
                                 )
                             },
                             meanings = word.meanings.map { meaning ->
@@ -128,8 +127,7 @@ class DictionaryViewModel(
                 }.flatten()
             }.flatten()
             addWordToDictionaryUseCase.execute(
-                name = wordName,
-                meanings = meanings
+                name = wordName, meanings = meanings
             )
             _dictionaryState.update { it.copy(isFavorite = true) }
         }
@@ -170,6 +168,19 @@ class DictionaryViewModel(
 
     fun onDropDownExpanded(page: Int, expanded: Boolean) {
         _dictionaryState.update { it.copy(dropDownExpanded = it.dropDownExpanded + (page to expanded)) }
+    }
+
+    fun getTranscriptionType(phonetic: Phonetic): String {
+        if ("us" in phonetic.voice.orEmpty()) {
+            return "US"
+        }
+        if ("uk" in phonetic.voice.orEmpty()) {
+            return "UK"
+        }
+        if ("au" in phonetic.voice.orEmpty()) {
+            return "AU"
+        }
+        return "[?]"
     }
 
     private fun mergePhonetics(wordResponse: WordResponse): WordResponse {

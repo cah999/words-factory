@@ -115,8 +115,12 @@ fun DictionaryScreenContent(
                                             shape = RoundedCornerShape(8.dp)
                                         )
                                         .padding(horizontal = 8.dp, vertical = 4.dp)) {
+                                        // todo фишка (если не пришёл текст, то пишется тип транскрипции)
                                         Text(
-                                            text = wordContent.phonetics[index].transcription ?: "",
+                                            text = wordContent.phonetics[index].transcription
+                                                ?: viewModel.getTranscriptionType(
+                                                    wordContent.phonetics[index]
+                                                ),
                                             style = MaterialTheme.typography.bodyMedium,
                                             color = if (phoneticsVariant == index) White else DarkGrey
                                         )
@@ -170,17 +174,14 @@ fun DictionaryScreenContent(
                     color = Dark
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                    text = wordContent.meanings[partOfSpeechVariant].partOfSpeech,
+                Text(text = wordContent.meanings[partOfSpeechVariant].partOfSpeech,
                     style = MaterialTheme.typography.bodyMedium,
                     color = DarkGrey,
                     modifier = if (wordContent.meanings.size > 1) Modifier.clickable {
                         viewModel.onDropDownExpanded(
-                            page,
-                            true
+                            page, true
                         )
-                    } else Modifier
-                )
+                    } else Modifier)
                 if (wordContent.meanings.size > 1) {
                     Box(contentAlignment = Alignment.CenterStart) {
                         Spacer(modifier = Modifier.width(4.dp))
@@ -199,8 +200,7 @@ fun DictionaryScreenContent(
 
                         DropdownMenu(
                             expanded = dictionaryState.dropDownExpanded[page] ?: false,
-                            modifier = Modifier
-                                .background(White),
+                            modifier = Modifier.background(White),
                             onDismissRequest = { viewModel.onDropDownExpanded(page, false) },
                         ) {
                             wordContent.meanings.forEach { meaning ->
@@ -241,12 +241,12 @@ fun DictionaryScreenContent(
             AccentButton(
                 modifier = Modifier.padding(horizontal = 10.dp),
                 onClick = {
-                    if (!dictionaryState.isFavorite)
-                        viewModel.addToDictionary() else viewModel.removeFromDictionary()
+                    if (!dictionaryState.isFavorite) viewModel.addToDictionary() else viewModel.removeFromDictionary()
                 },
                 isEnabled = true,
-                text = if (dictionaryState.isFavorite) stringResource(R.string.remove_from_dictionary) else
-                    stringResource(R.string.add_to_dictionary)
+                text = if (dictionaryState.isFavorite) stringResource(R.string.remove_from_dictionary) else stringResource(
+                    R.string.add_to_dictionary
+                )
             )
             Spacer(modifier = Modifier.height(8.dp))
         }

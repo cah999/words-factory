@@ -11,4 +11,6 @@ interface WordRepository {
     suspend fun addWord(name: String, meanings: List<String>)
     suspend fun updateWord(name: String, count: String)
     suspend fun deleteWord(name: String)
+    suspend fun increaseWordCounter(word: String)
+    suspend fun decreaseWordCounter(word: String)
 }

@@ -1,5 +1,6 @@
 package com.example.wordsfactory.presentation.ui.question
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.LinearEasing
@@ -52,6 +53,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.wordsfactory.common.Constants
 import com.example.wordsfactory.ui.theme.Dark
 import com.example.wordsfactory.ui.theme.DarkGrey
 import com.example.wordsfactory.ui.theme.Error
@@ -65,27 +67,31 @@ import org.koin.androidx.compose.koinViewModel
 
 // todo green / red light after answer
 @Composable
-fun QuestionScreen(onNavigate: () -> Unit = {}, viewModel: QuestionViewModel = koinViewModel()) {
+fun QuestionScreen(onNavigate: (Int, Int) -> Unit, viewModel: QuestionViewModel = koinViewModel()) {
     val questionState by viewModel.dictionaryState.collectAsStateWithLifecycle()
 
     var isBlocking by remember { mutableStateOf(false) }
     LaunchedEffect(questionState.currentQuestion) {
         animate(initialValue = 0f,
             targetValue = 1f,
-            animationSpec = tween(durationMillis = 5000, easing = LinearEasing),
+            animationSpec = tween(
+                durationMillis = Constants.QUESTION_TIME * 1000,
+                easing = LinearEasing
+            ),
             block = { value, _ ->
                 if (questionState.answerClicked) return@animate
                 viewModel.onTimerProgressChanged(value)
             })
         if (questionState.answerClicked) return@LaunchedEffect
-        if (!viewModel.onNextQuestion()) {
-            onNavigate()
+        if (viewModel.onNextQuestion() == false) {
+            onNavigate(questionState.correctQuestions, questionState.totalQuestions)
         }
     }
 
     LaunchedEffect(questionState.currentQuestion) {
         isBlocking = true
         delay(300)
+        viewModel.onAnswerClickedChanged(false)
         isBlocking = false
     }
 
@@ -115,12 +121,15 @@ fun QuestionScreen(onNavigate: () -> Unit = {}, viewModel: QuestionViewModel = k
                     answerVariant = viewModel.getAnswerVariant(index),
                     buttonClicked = questionState.answerClicked,
                     afterClick = {
-                        if (!viewModel.onNextQuestion()) {
-                            onNavigate()
+                        if (viewModel.onNextQuestion() == false) {
+                            onNavigate(questionState.correctQuestions, questionState.totalQuestions)
                         }
                     },
                     onClick = {
+                        if (questionState.answerClicked) return@AnswerBox
                         viewModel.onAnswerClickedChanged(true)
+                        viewModel.onChosenAnswerChanged(answer)
+                        Log.d("QuestionScreen", "clicked answer: $answer")
                     })
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -132,16 +141,22 @@ fun QuestionScreen(onNavigate: () -> Unit = {}, viewModel: QuestionViewModel = k
                     .padding(top = 32.dp)
             )
         }
-        AnimatedVisibility(visible = isBlocking, enter = fadeIn(), exit = fadeOut()) {
-            Box(
-                modifier = Modifier
+        if (questionState.currentQuestionCounter > 1) {
+            AnimatedVisibility(visible = isBlocking, enter = fadeIn(), exit = fadeOut()) {
+                Box(modifier = Modifier
                     .fillMaxSize()
                     .clickable { }
-                    .background(Success.copy(alpha = 0.2f)),
-            )
+                    .background(
+                        if (questionState.chosenAnswer?.isCorrect == true
+                            && questionState.answerClicked
+                        ) Success.copy(alpha = 0.2f)
+                        else Error.copy(alpha = 0.2f)
+                    ))
+            }
         }
     }
 }
+
 // todo рандомные клики / два клика могут быть (если одновременно нажать) ...
 @Composable
 fun AnswerBox(
@@ -263,5 +278,5 @@ fun Modifier.animatedBorder(
 @Preview
 @Composable
 private fun QuestionPreview() {
-    QuestionScreen()
+    QuestionScreen(onNavigate = { _, _ -> })
 }

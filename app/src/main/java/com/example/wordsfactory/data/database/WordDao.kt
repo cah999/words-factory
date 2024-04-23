@@ -29,5 +29,11 @@ interface WordDao {
 
     @Query("UPDATE WordTable SET count = :count WHERE name = :name")
     suspend fun updateWord(name: String, count: String)
+
+    @Query("UPDATE WordTable SET count = count + 1 WHERE name = :word")
+    suspend fun increaseWordCounter(word: String)
+
+    @Query("UPDATE WordTable SET count = count - 1 WHERE name = :word")
+    suspend fun decreaseWordCounter(word: String)
 }
 

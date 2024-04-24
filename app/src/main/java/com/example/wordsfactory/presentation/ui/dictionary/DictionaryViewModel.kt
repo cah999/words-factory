@@ -169,6 +169,10 @@ class DictionaryViewModel(
         _dictionaryState.update { it.copy(dropDownExpanded = it.dropDownExpanded + (page to expanded)) }
     }
 
+    fun onCurrentPageChanged(page: Int) {
+        _dictionaryState.update { it.copy(currentPage = page) }
+    }
+
     fun getTranscriptionType(phonetic: Phonetic): String {
         if ("us" in phonetic.voice.orEmpty()) {
             return "US"
@@ -203,6 +207,7 @@ class DictionaryViewModel(
 
 data class DictionaryState(
     val searchText: String = "",
+    val currentPage: Int = -1,
     val wordContent: List<WordContent>? = null,
     val isFavorite: Boolean = false,
     val isAudioLoading: Boolean = false,

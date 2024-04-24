@@ -21,6 +21,8 @@ import com.example.wordsfactory.ui.theme.Grey
 fun SearchRow(
     modifier: Modifier = Modifier,
     search: String,
+    currentPage: Int,
+    totalPages: Int,
     onSearchValueChange: (String) -> Unit,
     onSearch: () -> Unit
 ) {
@@ -35,6 +37,14 @@ fun SearchRow(
             unfocusedTextColor = Dark,
         ),
         shape = RoundedCornerShape(12.dp),
+        suffix = {
+            if (currentPage == -1 || totalPages == 0 || search.isEmpty()) return@OutlinedTextField
+            Text(
+                text = "${currentPage + 1}/$totalPages",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Grey
+            )
+        },
         trailingIcon = {
             IconButton(onClick = { onSearch() }) {
                 Icon(

@@ -5,6 +5,7 @@ import com.example.wordsfactory.domain.usecase.CheckUserAuthUseCase
 import com.example.wordsfactory.domain.usecase.DecreaseWordCounterUseCase
 import com.example.wordsfactory.domain.usecase.DeleteFavoriteUseCase
 import com.example.wordsfactory.domain.usecase.GetCurrentUserUseCase
+import com.example.wordsfactory.domain.usecase.GetMyRememberedWordsUseCase
 import com.example.wordsfactory.domain.usecase.GetQuestionsUseCase
 import com.example.wordsfactory.domain.usecase.GetWordUseCase
 import com.example.wordsfactory.domain.usecase.GetWordsCountUseCase
@@ -67,5 +68,9 @@ val domainModule = module {
 
     factory<DecreaseWordCounterUseCase> {
         DecreaseWordCounterUseCase(wordRepository = get())
+    }
+
+    factory<GetMyRememberedWordsUseCase> {
+        GetMyRememberedWordsUseCase(wordRepository = get())
     }
 }

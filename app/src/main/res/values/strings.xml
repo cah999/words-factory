@@ -31,4 +31,7 @@
     <string name="cutout">CUTOUT</string>
     <string name="remove_from_dictionary">Remove from Dictionary</string>
     <string name="logout">Logout</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">Your stats on the home screen</string>
 </resources>

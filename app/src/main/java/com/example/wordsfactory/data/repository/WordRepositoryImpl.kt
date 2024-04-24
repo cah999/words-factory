@@ -59,4 +59,8 @@ class WordRepositoryImpl(
     override suspend fun decreaseWordCounter(word: String) {
         wordDao.decreaseWordCounter(word)
     }
+
+    override suspend fun getMyRememberedWords(): Int {
+        return wordDao.getMyRememberedWords()
+    }
 }

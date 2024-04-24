@@ -34,10 +34,12 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
             .fillMaxWidth()
             .padding(top = 24.dp, start = 16.dp, end = 16.dp),
             search = dictionaryState.searchText,
+            currentPage = dictionaryState.currentPage,
+            totalPages = dictionaryState.wordContent?.size ?: 0,
             onSearchValueChange = {
                 viewModel.onSearchTextChanged(it)
             },
-            onSearch = {})
+            onSearch = { viewModel.onSearchTextChanged(dictionaryState.searchText) })
         when (dictionaryUiState) {
             is Loading -> DictionaryScreenLoading()
             is Default -> DictionaryScreenPlaceholder(modifier = Modifier.padding(top = 52.dp))

@@ -29,6 +29,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -59,6 +60,11 @@ fun DictionaryScreenContent(
     val coroutineScope = rememberCoroutineScope()
     val mediaPlayer = remember { MediaPlayer() }
     val pagerState = rememberPagerState(pageCount = { wordContents.size })
+
+    LaunchedEffect(pagerState.currentPage) {
+        Log.d("DictionaryScreenContent", "onCurrentPageChanged: ${pagerState.currentPage}")
+        viewModel.onCurrentPageChanged(pagerState.currentPage)
+    }
 
     HorizontalPager(
         state = pagerState,
@@ -96,7 +102,7 @@ fun DictionaryScreenContent(
                                 color = Primary,
                                 modifier = Modifier.padding(top = 5.dp)
                             )
-                        } else {
+                        } else if (wordContent.phonetics.size > 1) {
                             LazyRow(
                                 modifier = Modifier
                                     .weight(1f, false)

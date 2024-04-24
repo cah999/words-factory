@@ -35,5 +35,8 @@ interface WordDao {
 
     @Query("UPDATE WordTable SET count = count - 1 WHERE name = :word")
     suspend fun decreaseWordCounter(word: String)
+
+    @Query("SELECT COUNT(*) FROM WordTable WHERE count > 5")
+    suspend fun getMyRememberedWords(): Int
 }
 

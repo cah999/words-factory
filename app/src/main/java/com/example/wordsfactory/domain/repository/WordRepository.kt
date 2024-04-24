@@ -13,4 +13,5 @@ interface WordRepository {
     suspend fun deleteWord(name: String)
     suspend fun increaseWordCounter(word: String)
     suspend fun decreaseWordCounter(word: String)
+    suspend fun getMyRememberedWords(): Int
 }

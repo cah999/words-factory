@@ -65,7 +65,6 @@ import com.example.wordsfactory.ui.theme.Yellow
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
-// todo green / red light after answer
 @Composable
 fun QuestionScreen(onNavigate: (Int, Int) -> Unit, viewModel: QuestionViewModel = koinViewModel()) {
     val questionState by viewModel.dictionaryState.collectAsStateWithLifecycle()
@@ -157,7 +156,6 @@ fun QuestionScreen(onNavigate: (Int, Int) -> Unit, viewModel: QuestionViewModel 
     }
 }
 
-// todo рандомные клики / два клика могут быть (если одновременно нажать) ...
 @Composable
 fun AnswerBox(
     modifier: Modifier = Modifier,

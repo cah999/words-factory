@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class WordTable(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
-    val count: Int
+    var count: Int
 )
 
 // todo add releationship between word and userId in the future

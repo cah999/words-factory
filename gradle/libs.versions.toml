@@ -3,6 +3,7 @@ accompanistPermissions = "0.35.0-alpha"
 accompanistSystemuicontroller = "0.27.0"
 activityKtx = "1.8.2"
 agp = "8.3.1"
+composeBomVersion = "2023.03.00"
 converterGson = "2.11.0"
 firebaseAuthKtx = "22.3.1"
 firebaseBom = "32.8.0"
@@ -13,12 +14,16 @@ coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
+kotlinxCoroutinesTest = "1.7.3"
 lifecycleRuntimeCompose = "2.6.0-rc01"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.7.0"
 composeBom = "2024.03.00"
 lifecycleRuntimeKtxVersion = "2.4.0"
 material = "1.6.4"
+mockitoInlineVersion = "3.11.2"
+mockitoKotlin = "4.1.0"
+mockk = "1.12.0"
 navigationComposeVersion = "2.7.7"
 navigationRuntimeKtx = "2.7.7"
 navigationCompose = "2.7.7"
@@ -27,6 +32,7 @@ firebaseDatabaseKtx = "20.3.1"
 retrofitVersion = "2.11.0"
 material3WindowSizeClassAndroid = "1.2.1"
 roomRuntime = "2.6.1"
+junitKtx = "1.1.5"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -63,8 +69,13 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseDatabaseKtx" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseDatabaseKtx" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+mockito-mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInlineVersion" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
 androidx-material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class-android", version.ref = "material3WindowSizeClassAndroid" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 
 
 

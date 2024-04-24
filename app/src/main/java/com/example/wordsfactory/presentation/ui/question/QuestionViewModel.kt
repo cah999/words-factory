@@ -1,6 +1,5 @@
 package com.example.wordsfactory.presentation.ui.question
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordsfactory.common.Constants
@@ -57,10 +56,9 @@ class QuestionViewModel(
         _questionState.update { it.copy(correctQuestions = correctQuestions) }
     }
 
-    private fun getQuestions() {
+    fun getQuestions() {
         viewModelScope.launch {
             val questions = getQuestionsUseCase.execute(count = Constants.QUESTIONS_COUNT)
-            Log.d("QuestionViewModel", "questions: $questions")
             onQuestionsChanged(questions)
             onTotalQuestionsChanged(questions.size)
             onCurrentQuestionStateChanged(questions.first())
@@ -117,6 +115,9 @@ class QuestionViewModel(
     }
 
 }
+// todo refactor :)
+
+
 
 data class QuestionState(
     val questions: List<Question> = emptyList(),

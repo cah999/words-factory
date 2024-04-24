@@ -3,6 +3,7 @@ package com.example.wordsfactory.presentation.ui.dictionary
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wordsfactory.common.Constants.Companion.DEBOUNCE_TIMEOUT
 import com.example.wordsfactory.data.model.WordRequest
 import com.example.wordsfactory.data.service.PhoneticResponse
 import com.example.wordsfactory.data.service.WordResponse
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-private const val DEBOUNCE_TIMEOUT = 300L // todo const
 
 class DictionaryViewModel(
     private val getWordUseCase: GetWordUseCase,
@@ -86,7 +86,6 @@ class DictionaryViewModel(
                     })
                 }
             } else {
-                // todo так можно ?
                 _dictionaryState.update { it.copy(wordContent = null) }
             }
 

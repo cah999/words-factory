@@ -22,7 +22,7 @@ class WordRepositoryImpl(
             val incorrectWords = allWords.filter { it.id != word.id }.shuffled().take(2)
             val answers = incorrectWords.map { Answer(it.name, false) } + Answer(word.name, true)
             Question(meanings.random().meaning, answers.shuffled())
-        }
+        }.shuffled()
     }
 
     override suspend fun getWordsCount(): Int {

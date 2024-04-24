@@ -96,7 +96,6 @@ class MainActivity : ComponentActivity() {
                     if (showNavigationRail && currentRoute != Screen.Video.route) Modifier.transformable(
                         state
                     ) else Modifier
-                // todo fix bottom bar height on pixel 3a
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()

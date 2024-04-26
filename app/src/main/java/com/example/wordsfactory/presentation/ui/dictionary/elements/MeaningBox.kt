@@ -1,4 +1,4 @@
-package com.example.wordsfactory.presentation.ui.dictionary
+package com.example.wordsfactory.presentation.ui.dictionary.elements
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.wordsfactory.R
+import com.example.wordsfactory.domain.model.Definition
 import com.example.wordsfactory.ui.theme.Dark
 import com.example.wordsfactory.ui.theme.Grey
 import com.example.wordsfactory.ui.theme.Secondary

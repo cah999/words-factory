@@ -1,7 +1,6 @@
 package com.example.wordsfactory.presentation.ui.profile
 
 import androidx.lifecycle.ViewModel
-import com.example.wordsfactory.data.model.User
 import com.example.wordsfactory.domain.usecase.GetCurrentUserUseCase
 import com.example.wordsfactory.domain.usecase.LogoutUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,8 +28,3 @@ class ProfileViewModel(
         _profileState.update { it.copy(user = user) }
     }
 }
-
-
-data class ProfileState(
-    val user: User? = null
-)

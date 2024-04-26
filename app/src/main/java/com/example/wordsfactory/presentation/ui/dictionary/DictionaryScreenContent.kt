@@ -42,6 +42,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.wordsfactory.R
+import com.example.wordsfactory.domain.model.WordContent
+import com.example.wordsfactory.presentation.ui.dictionary.elements.MeaningBox
 import com.example.wordsfactory.ui.theme.Dark
 import com.example.wordsfactory.ui.theme.DarkGrey
 import com.example.wordsfactory.ui.theme.Grey
@@ -252,5 +254,4 @@ fun DictionaryScreenContent(
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
-
 }

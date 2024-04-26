@@ -16,8 +16,6 @@ class AuthRepositoryImpl(
     override fun login(loginData: UserLogin, result: (UiState) -> Unit) {
         auth.signInWithEmailAndPassword(loginData.email, loginData.password).addOnCompleteListener {
             if (it.isSuccessful) {
-                val currentUser = Firebase.auth.currentUser
-                Log.d("AuthRepository", "Current user name: ${currentUser?.displayName}")
                 result.invoke(UiState.Success)
             } else {
                 result.invoke(UiState.Error(it.exception?.message ?: "An error occurred"))
@@ -41,8 +39,6 @@ class AuthRepositoryImpl(
 
     override fun updateProfile(user: User) {
         val currentUser = Firebase.auth.currentUser
-        Log.d("AuthRepository", "Current user: $currentUser user id ${currentUser?.uid}")
-
         val profileUpdates = userProfileChangeRequest {
             displayName = user.name
         }

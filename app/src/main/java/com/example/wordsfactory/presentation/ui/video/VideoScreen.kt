@@ -1,4 +1,4 @@
-package com.example.wordsfactory.presentation.video
+package com.example.wordsfactory.presentation.ui.video
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -30,9 +30,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun VideoScreen(viewModel: VideoViewModel = koinViewModel()) {
     val state by viewModel.videoState.collectAsStateWithLifecycle()
-//    var backEnabled by remember { mutableStateOf(false) }
     var webView: WebView? = null
-//    var progress by remember { mutableIntStateOf(0) }
     val activity = LocalView.current.context as Activity
     Box {
         AndroidView(factory = { context ->
@@ -46,7 +44,6 @@ fun VideoScreen(viewModel: VideoViewModel = koinViewModel()) {
 
                     override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
                         viewModel.onBackEnabledChanged(view.canGoBack())
-//                        backEnabled = view.canGoBack()
                         super.onPageStarted(view, url, favicon)
                     }
                 }

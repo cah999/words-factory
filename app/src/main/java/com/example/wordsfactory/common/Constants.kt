@@ -7,6 +7,7 @@ class Constants {
         const val DEFAULT_LOGIN = "qwe@qww.ee"
         const val DEFAULT_PASSWORD = "123456"
         const val BASE_URL = "https://api.dictionaryapi.dev/api/v2/"
+        const val DATABASE_NAME = "words_factory"
 
         const val TIMER_TIME = 5
         const val CUTOUT = "cutout"

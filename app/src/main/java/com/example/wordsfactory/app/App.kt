@@ -3,12 +3,12 @@ package com.example.wordsfactory.app
 import android.app.Application
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.example.wordsfactory.NotificationWorker
+import com.example.wordsfactory.presentation.notification.NotificationWorker
 import com.example.wordsfactory.R
 import com.example.wordsfactory.di.appModule
 import com.example.wordsfactory.di.dataModule
 import com.example.wordsfactory.di.domainModule
-import com.example.wordsfactory.presentation.widget.DataSyncWorker
+import com.example.wordsfactory.presentation.widget.WidgetDataSyncWorker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -25,7 +25,7 @@ class App : Application() {
         val workManager = WorkManager.getInstance(this)
 
         val dataSyncWorkName = getString(R.string.datasyncwork)
-        val dataSyncWorkRequest = PeriodicWorkRequestBuilder<DataSyncWorker>(15, TimeUnit.MINUTES)
+        val dataSyncWorkRequest = PeriodicWorkRequestBuilder<WidgetDataSyncWorker>(15, TimeUnit.MINUTES)
             .addTag(dataSyncWorkName)
             .build()
 

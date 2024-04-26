@@ -5,14 +5,14 @@ import androidx.glance.appwidget.updateAll
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 
-class DataSyncWorker(
+class WidgetDataSyncWorker(
     private val context: Context,
     params: WorkerParameters,
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
 
-        MyAppWidget().updateAll(context)
+        AppWidget().updateAll(context)
         return Result.success()
     }
 }

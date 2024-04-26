@@ -6,7 +6,6 @@ import androidx.room.RoomDatabase
 import com.example.wordsfactory.data.model.Meaning
 import com.example.wordsfactory.data.model.WordTable
 
-const val DATABASE_NAME = "words_factory"
 
 @Database(entities = [WordTable::class, Meaning::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {

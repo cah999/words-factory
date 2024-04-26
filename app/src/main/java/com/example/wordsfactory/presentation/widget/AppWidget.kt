@@ -37,11 +37,12 @@ import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import com.example.wordsfactory.R
+import com.example.wordsfactory.ui.theme.Black
 import com.example.wordsfactory.ui.theme.DarkGrey
 import com.example.wordsfactory.ui.theme.White
 import org.koin.compose.koinInject
 
-class MyAppWidget : GlanceAppWidget() {
+class AppWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
             MyAppWidgetContent()
@@ -77,7 +78,7 @@ class MyAppWidget : GlanceAppWidget() {
                     provider = ImageProvider(R.drawable.refresh),
                     contentDescription = null,
                     modifier = GlanceModifier.clickable(
-                        onClick = actionRunCallback<RefreshAction>()
+                        onClick = actionRunCallback<WidgetRefreshAction>()
                     ).size(14.dp)
                 )
             }
@@ -129,7 +130,7 @@ class MyAppWidget : GlanceAppWidget() {
     private fun Context.textAsBitmap(
         text: String,
         fontSize: TextUnit,
-        color: Color = Color.Black,
+        color: Color = Black,
         letterSpacing: Float = 0f,
         font: Int
     ): Bitmap {
@@ -160,7 +161,7 @@ class MyAppWidget : GlanceAppWidget() {
         @FontRes font: Int,
         fontSize: TextUnit,
         modifier: GlanceModifier = GlanceModifier,
-        color: Color = Color.Black,
+        color: Color = Black,
         letterSpacing: TextUnit = 0.1.sp
     ) {
         Image(

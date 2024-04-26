@@ -35,10 +35,3 @@ class TrainingViewModel(
         }
     }
 }
-
-
-data class TrainingState(
-    val count: Int = 25,
-    val timerRemainingTime: Int = 5,
-    val timerStarted: Boolean = false,
-)

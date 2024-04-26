@@ -2,8 +2,8 @@ package com.example.wordsfactory.di
 
 import androidx.room.Room
 import com.example.wordsfactory.common.Constants
+import com.example.wordsfactory.common.Constants.Companion.DATABASE_NAME
 import com.example.wordsfactory.data.database.AppDatabase
-import com.example.wordsfactory.data.database.DATABASE_NAME
 import com.example.wordsfactory.data.repository.AuthRepositoryImpl
 import com.example.wordsfactory.data.repository.DictionaryRepositoryImpl
 import com.example.wordsfactory.data.repository.DictionaryRepositoryLocalImpl

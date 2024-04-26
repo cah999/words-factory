@@ -9,11 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +22,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.wordsfactory.R
+import com.example.wordsfactory.presentation.ui.dictionary.elements.DictionaryScreenLoading
+import com.example.wordsfactory.presentation.ui.dictionary.elements.DictionaryScreenPlaceholder
+import com.example.wordsfactory.presentation.ui.dictionary.elements.ErrorAlertDialog
+import com.example.wordsfactory.presentation.ui.dictionary.elements.SearchRow
 import com.example.wordsfactory.presentation.ui.utils.UiState.Default
 import com.example.wordsfactory.presentation.ui.utils.UiState.Error
 import com.example.wordsfactory.presentation.ui.utils.UiState.Loading
@@ -101,46 +102,6 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
     }
 }
 
-@Composable
-fun ErrorAlertDialog(onDismiss: () -> Unit, errorText: String) {
-    AlertDialog(onDismissRequest = onDismiss,
-        title = { Text(text = "Error", style = MaterialTheme.typography.headlineSmall) },
-        text = { Text(text = errorText, style = MaterialTheme.typography.bodyMedium) },
-        confirmButton = {
-            Button(onClick = onDismiss) {
-                Text(text = "OK", style = MaterialTheme.typography.bodyMedium, color = White)
-            }
-        })
-}
-
-@Composable
-fun DictionaryScreenLoading() {
-    LinearProgressIndicator(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp),
-        color = Primary,
-        trackColor = Primary.copy(alpha = 0.2f)
-    )
-}
-
-
-data class WordContent(
-    val word: String, val phonetics: List<Phonetic>?, val meanings: List<Meaning>
-)
-
-data class Phonetic(
-    val transcription: String?, val voice: String?
-)
-
-data class Meaning(
-    val partOfSpeech: String, val definitions: List<Definition>
-)
-
-data class Definition(
-    val definition: String,
-    val example: String?,
-)
 
 @Preview(showBackground = true)
 @Composable

@@ -13,7 +13,7 @@ class WidgetViewModel(
     private val getWordsCountUseCase: GetWordsCountUseCase,
     private val getMyRememberedWordsUseCase: GetMyRememberedWordsUseCase
 ) : ViewModel() {
-    private val _widgetState = MutableStateFlow(MyWidgetState())
+    private val _widgetState = MutableStateFlow(WidgetState())
     val widgetState = _widgetState.asStateFlow()
 
     fun updateMyWords() {
@@ -29,5 +29,4 @@ class WidgetViewModel(
             _widgetState.update { it.copy(myWordsRemembered = myWordsRemembered) }
         }
     }
-
 }

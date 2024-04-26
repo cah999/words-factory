@@ -10,8 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.NavigationRailItem
-import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,7 +24,8 @@ import com.example.wordsfactory.ui.theme.White
 @Composable
 fun BottomBar(navController: NavController) {
     NavigationBar(
-        containerColor = White, contentColor = White,
+        containerColor = White,
+        contentColor = White,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
@@ -38,76 +37,29 @@ fun BottomBar(navController: NavController) {
         val currentScreen = navController.currentBackStackEntry?.destination?.route
 
         screensToDisplay.forEach { screen ->
-            NavigationBarItem(
-                icon = {
-                    screen.imageResource?.let { resource ->
-                        Icon(
-                            painter = painterResource(resource),
-                            contentDescription = null,
-                            tint = if (currentScreen == screen.route) Primary else Grey,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                },
-                label = {
-                    Text(
-                        text = screen.title,
-                        color = if (currentScreen == screen.route) Primary else Grey,
-                        style = MaterialTheme.typography.bodyMedium
+            NavigationBarItem(icon = {
+                screen.imageResource?.let { resource ->
+                    Icon(
+                        painter = painterResource(resource),
+                        contentDescription = null,
+                        tint = if (currentScreen == screen.route) Primary else Grey,
+                        modifier = Modifier.size(24.dp)
                     )
-                },
-                selected = currentScreen == screen.route,
-                onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true
-                    }
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Color.Transparent
+                }
+            }, label = {
+                Text(
+                    text = screen.title,
+                    color = if (currentScreen == screen.route) Primary else Grey,
+                    style = MaterialTheme.typography.bodyMedium
                 )
+            }, selected = currentScreen == screen.route, onClick = {
+                navController.navigate(screen.route) {
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true
+                }
+            }, colors = NavigationBarItemDefaults.colors(
+                indicatorColor = Color.Transparent
             )
-        }
-    }
-}
-
-
-@Composable
-fun NavigationRailBar(navController: NavController) {
-    androidx.compose.material3.NavigationRail {
-        val screensToDisplay =
-            listOf(Screen.Dictionary, Screen.Training, Screen.Video, Screen.Profile)
-        val currentScreen = navController.currentBackStackEntry?.destination?.route
-
-        screensToDisplay.forEach { screen ->
-            NavigationRailItem(
-                icon = {
-                    screen.imageResource?.let { resource ->
-                        Icon(
-                            painter = painterResource(resource),
-                            contentDescription = null,
-                            tint = if (currentScreen == screen.route) Primary else Grey,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                },
-                label = {
-                    Text(
-                        text = screen.title,
-                        color = if (currentScreen == screen.route) Primary else Grey,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                },
-                selected = currentScreen == screen.route,
-                onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true
-                    }
-                },
-                colors = NavigationRailItemDefaults.colors(
-                    indicatorColor = Color.Transparent
-                )
             )
         }
     }

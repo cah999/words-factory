@@ -1,4 +1,4 @@
-package com.example.wordsfactory.presentation.video
+package com.example.wordsfactory.presentation.ui.video
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,3 @@ class VideoViewModel : ViewModel() {
         _videoState.update { it.copy(backEnabled = backEnabled) }
     }
 }
-
-data class VideoState(
-    val progress: Int = 0, val backEnabled: Boolean = false
-)

@@ -2,7 +2,6 @@ package com.example.wordsfactory.data.repository
 
 import com.example.wordsfactory.data.model.WordRequest
 import com.example.wordsfactory.data.service.DictionaryApiService
-import com.example.wordsfactory.data.service.WordResponse
 import com.example.wordsfactory.domain.repository.DictionaryRepository
 import com.example.wordsfactory.presentation.ui.utils.UiState
 
@@ -22,14 +21,11 @@ class DictionaryRepositoryImpl(
                     return it.body()
                 } else {
                     result.invoke(UiState.Default)
-//                    result.invoke(UiState.Error(it.errorBody()?.string() ?: "An error occurred"))
                     return null
                 }
             }
         } catch (e: Exception) {
             return dictionaryRepositoryLocalImpl.getWordContent(request, result)
-//            result.invoke(UiState.Error(e.message ?: "An error occurred"))
-//            return null
         }
     }
 }

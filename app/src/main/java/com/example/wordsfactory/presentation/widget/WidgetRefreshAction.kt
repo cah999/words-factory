@@ -5,10 +5,10 @@ import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
 
-class RefreshAction : ActionCallback {
+class WidgetRefreshAction : ActionCallback {
     override suspend fun onAction(
         context: Context, glanceId: GlanceId, parameters: ActionParameters
     ) {
-        MyAppWidget().update(context, glanceId)
+        AppWidget().update(context, glanceId)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.wordsfactory
+package com.example.wordsfactory.presentation.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,6 +8,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.example.wordsfactory.R
 import com.example.wordsfactory.common.Constants
 import com.example.wordsfactory.data.repository.PreferencesRepositoryImpl
 import com.example.wordsfactory.domain.usecase.GetLastTimeTrainingUseCase

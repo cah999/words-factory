@@ -15,7 +15,7 @@ import com.example.wordsfactory.presentation.ui.question.QuestionScreen
 import com.example.wordsfactory.presentation.ui.signup.SignUpScreen
 import com.example.wordsfactory.presentation.ui.splash.SplashScreen
 import com.example.wordsfactory.presentation.ui.training.TrainingScreen
-import com.example.wordsfactory.presentation.video.VideoScreen
+import com.example.wordsfactory.presentation.ui.video.VideoScreen
 
 @Composable
 fun AppNavigation(

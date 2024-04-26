@@ -5,8 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordsfactory.common.Constants.Companion.DEBOUNCE_TIMEOUT
 import com.example.wordsfactory.data.model.WordRequest
-import com.example.wordsfactory.data.service.PhoneticResponse
-import com.example.wordsfactory.data.service.WordResponse
+import com.example.wordsfactory.data.repository.PhoneticResponse
+import com.example.wordsfactory.data.repository.WordResponse
+import com.example.wordsfactory.domain.model.Definition
+import com.example.wordsfactory.domain.model.Meaning
+import com.example.wordsfactory.domain.model.Phonetic
+import com.example.wordsfactory.domain.model.WordContent
 import com.example.wordsfactory.domain.usecase.AddWordToDictionaryUseCase
 import com.example.wordsfactory.domain.usecase.DeleteFavoriteUseCase
 import com.example.wordsfactory.domain.usecase.GetWordUseCase
@@ -209,13 +213,3 @@ class DictionaryViewModel(
     }
 }
 
-data class DictionaryState(
-    val searchText: String = "",
-    val currentPage: Int = -1,
-    val wordContent: List<WordContent>? = null,
-    val isFavorite: Boolean = false,
-    val isAudioLoading: Boolean = false,
-    val phoneticsVariants: Map<Int, Int> = mapOf(),
-    val partOfSpeechVariants: Map<Int, Int> = mapOf(),
-    val dropDownExpanded: Map<Int, Boolean> = mapOf()
-)

@@ -5,8 +5,8 @@ import com.example.wordsfactory.data.database.WordDao
 import com.example.wordsfactory.data.model.Meaning
 import com.example.wordsfactory.data.model.WordTable
 import com.example.wordsfactory.domain.repository.WordRepository
-import com.example.wordsfactory.presentation.ui.question.Answer
-import com.example.wordsfactory.presentation.ui.question.Question
+import com.example.wordsfactory.domain.model.Answer
+import com.example.wordsfactory.domain.model.Question
 
 class WordRepositoryImpl(
     private val wordDao: WordDao, private val meaningDao: MeaningDao

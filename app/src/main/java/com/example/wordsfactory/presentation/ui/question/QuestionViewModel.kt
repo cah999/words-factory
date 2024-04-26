@@ -3,6 +3,8 @@ package com.example.wordsfactory.presentation.ui.question
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordsfactory.common.Constants
+import com.example.wordsfactory.domain.model.Answer
+import com.example.wordsfactory.domain.model.Question
 import com.example.wordsfactory.domain.usecase.DecreaseWordCounterUseCase
 import com.example.wordsfactory.domain.usecase.GetQuestionsUseCase
 import com.example.wordsfactory.domain.usecase.IncreaseWordCounterUseCase
@@ -130,27 +132,3 @@ class QuestionViewModel(
     }
 
 }
-// todo refactor :)
-
-
-data class QuestionState(
-    val questions: List<Question> = emptyList(),
-    val currentQuestion: Question = Question("", emptyList()),
-    val currentQuestionCounter: Int = 1,
-    val correctQuestions: Int = 0,
-    val totalQuestions: Int = 0,
-    val timerProgress: Float = 0f,
-    val answerClicked: Boolean = false,
-    val chosenAnswer: Answer? = null,
-    val isBlocking: Boolean = false,
-)
-
-data class Answer(
-    val text: String,
-    val isCorrect: Boolean,
-)
-
-data class Question(
-    val question: String,
-    val answers: List<Answer>,
-)

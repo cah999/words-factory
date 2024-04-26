@@ -41,14 +41,3 @@ class SignUpViewModel(private val registerUseCase: RegisterUseCase) : ViewModel(
         _signUpState.update { it.copy(passwordVisible = !it.passwordVisible) }
     }
 }
-
-
-data class SignUpState(
-    val nameText: String = "",
-    val emailText: String = "",
-    val passwordText: String = "",
-    val passwordVisible: Boolean = false,
-) {
-    val isButtonEnabled =
-        emailText.isNotBlank() && passwordText.isNotBlank() && nameText.isNotBlank()
-}

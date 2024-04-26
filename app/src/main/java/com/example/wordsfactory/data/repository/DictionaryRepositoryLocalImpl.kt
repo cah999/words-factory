@@ -3,9 +3,6 @@ package com.example.wordsfactory.data.repository
 import com.example.wordsfactory.data.database.MeaningDao
 import com.example.wordsfactory.data.database.WordDao
 import com.example.wordsfactory.data.model.WordRequest
-import com.example.wordsfactory.data.service.DefinitionResponse
-import com.example.wordsfactory.data.service.MeaningResponse
-import com.example.wordsfactory.data.service.WordResponse
 import com.example.wordsfactory.domain.repository.DictionaryRepository
 import com.example.wordsfactory.presentation.ui.utils.UiState
 

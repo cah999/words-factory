@@ -1,7 +1,6 @@
 package com.example.wordsfactory.presentation.ui.login
 
 import androidx.lifecycle.ViewModel
-import com.example.wordsfactory.common.Constants
 import com.example.wordsfactory.data.model.UserLogin
 import com.example.wordsfactory.domain.usecase.LoginUseCase
 import com.example.wordsfactory.presentation.ui.utils.UiState
@@ -38,12 +37,4 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
             }
         })
     }
-}
-
-data class LoginState(
-    val emailText: String = Constants.DEFAULT_LOGIN,
-    val passwordText: String = Constants.DEFAULT_PASSWORD,
-    val passwordVisible: Boolean = false,
-) {
-    val isButtonEnabled = emailText.isNotBlank() && passwordText.isNotBlank()
 }

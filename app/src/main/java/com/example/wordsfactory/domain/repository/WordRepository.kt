@@ -1,6 +1,6 @@
 package com.example.wordsfactory.domain.repository
 
-import com.example.wordsfactory.presentation.ui.question.Question
+import com.example.wordsfactory.domain.model.Question
 
 interface WordRepository {
     suspend fun getWords()

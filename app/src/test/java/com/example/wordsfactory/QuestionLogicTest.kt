@@ -66,16 +66,13 @@ class QuestionLogicTest {
         `when`(wordDao.getAll()).thenReturn(List(10) { WordTable(it, "Word$it", 0) })
         `when`(wordDao.getWorseWords(Constants.QUESTIONS_COUNT)).thenReturn(List(10) {
             WordTable(
-                it,
-                "Word$it",
-                0
+                it, "Word$it", 0
             )
         })
         `when`(meaningDao.getMeanings(anyInt())).thenReturn(
             listOf(
                 Meaning(
-                    wordId = 1,
-                    meaning = "meaning1"
+                    wordId = 1, meaning = "meaning1"
                 ), Meaning(wordId = 2, meaning = "meaning2")
             )
         )
@@ -93,16 +90,13 @@ class QuestionLogicTest {
         `when`(wordDao.getAll()).thenReturn(List(10) { WordTable(it, "Word$it", 0) })
         `when`(wordDao.getWorseWords(Constants.QUESTIONS_COUNT)).thenReturn(List(10) {
             WordTable(
-                it,
-                "Word$it",
-                0
+                it, "Word$it", 0
             )
         })
         `when`(meaningDao.getMeanings(anyInt())).thenReturn(
             listOf(
                 Meaning(
-                    wordId = 1,
-                    meaning = "meaning1"
+                    wordId = 1, meaning = "meaning1"
                 ), Meaning(wordId = 2, meaning = "meaning2")
             )
         )
@@ -122,15 +116,13 @@ class QuestionLogicTest {
         `when`(meaningDao.getMeanings(anyInt())).thenReturn(
             listOf(
                 Meaning(
-                    wordId = 1,
-                    meaning = "meaning1"
+                    wordId = 1, meaning = "meaning1"
                 ), Meaning(wordId = 2, meaning = "meaning2")
             )
         )
         val worseWords = wordDao.getWorseWords(Constants.QUESTIONS_COUNT)
         val questions = getQuestionsUseCase.execute(Constants.QUESTIONS_COUNT)
-        assertEquals(
-            worseWords.map { word -> word.name }.sorted(),
+        assertEquals(worseWords.map { word -> word.name }.sorted(),
             questions.map { question -> question.answers.find { it.isCorrect }?.text }
                 .sortedBy { it })
     }
@@ -147,8 +139,7 @@ class QuestionLogicTest {
         `when`(meaningDao.getMeanings(anyInt())).thenReturn(
             listOf(
                 Meaning(
-                    wordId = 1,
-                    meaning = "meaning1"
+                    wordId = 1, meaning = "meaning1"
                 ), Meaning(wordId = 2, meaning = "meaning2")
             )
         )
@@ -170,8 +161,7 @@ class QuestionLogicTest {
             val startWordCount = correctWord.count
             increaseWordCounterUseCase.execute(correctWord.name)
             assertEquals(
-                startWordCount + 1,
-                wordDao.getAll().find { it.name == correctWord.name }?.count
+                startWordCount + 1, wordDao.getAll().find { it.name == correctWord.name }?.count
             )
         }
     }
@@ -188,8 +178,7 @@ class QuestionLogicTest {
         `when`(meaningDao.getMeanings(anyInt())).thenReturn(
             listOf(
                 Meaning(
-                    wordId = 1,
-                    meaning = "meaning1"
+                    wordId = 1, meaning = "meaning1"
                 ), Meaning(wordId = 2, meaning = "meaning2")
             )
         )
@@ -205,14 +194,13 @@ class QuestionLogicTest {
         }
         val worseWords = wordDao.getWorseWords(Constants.QUESTIONS_COUNT)
         val questions = getQuestionsUseCase.execute(Constants.QUESTIONS_COUNT)
-        val incorrectAnswer = questions.first().answers.find { !it.isCorrect }?.text
-        val incorrectWord = worseWords.find { it.name == incorrectAnswer }
-        if (incorrectWord != null) {
-            val startWordCount = incorrectWord.count
-            decreaseWordCounterUseCase.execute(incorrectWord.name)
+        val correctAnswer = questions.first().answers.find { it.isCorrect }?.text
+        val correctWord = worseWords.find { it.name == correctAnswer }
+        if (correctWord != null) {
+            val startWordCount = correctWord.count
+            decreaseWordCounterUseCase.execute(correctWord.name)
             assertEquals(
-                startWordCount - 1,
-                wordDao.getAll().find { it.name == incorrectWord.name }?.count
+                startWordCount - 1, wordDao.getAll().find { it.name == correctWord.name }?.count
             )
         }
     }

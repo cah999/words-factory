@@ -1,4 +1,4 @@
-package com.example.wordsfactory.presentation.ui.dictionary
+package com.example.wordsfactory.presentation.ui.dictionary.elements
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -54,6 +54,6 @@ fun SearchRow(
             }
 
         },
-        placeholder = { Text(text = stringResource(R.string.search)) })
-
+        placeholder = { Text(text = stringResource(R.string.search)) }
+    )
 }

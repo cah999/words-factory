@@ -1,4 +1,4 @@
-package com.example.wordsfactory.presentation.ui.dictionary
+package com.example.wordsfactory.presentation.ui.dictionary.elements
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

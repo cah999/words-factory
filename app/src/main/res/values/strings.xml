@@ -34,4 +34,11 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">Your stats on the home screen</string>
+    <string name="testreminder">TestReminder</string>
+    <string name="time_to_practice">Time to practice!</string>
+    <string name="it_seems_you_haven_t_practiced_today_yet_let_s_do_it">It seems you haven\'t practiced today yet. Let\'s do it!</string>
+    <string name="last_time_training">last_time_training</string>
+    <string name="datasyncwork">dataSyncWork</string>
+    <string name="notificationwork">notificationWork</string>
+    <string name="no_words">To access the training, add the words to the dictionary</string>
 </resources>

@@ -42,7 +42,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.wordsfactory.R
-import com.example.wordsfactory.presentation.ui.utils.AccentButton
 import com.example.wordsfactory.ui.theme.Dark
 import com.example.wordsfactory.ui.theme.DarkGrey
 import com.example.wordsfactory.ui.theme.Grey
@@ -50,6 +49,7 @@ import com.example.wordsfactory.ui.theme.Primary
 import com.example.wordsfactory.ui.theme.White
 import kotlinx.coroutines.launch
 import java.util.Locale
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -62,10 +62,8 @@ fun DictionaryScreenContent(
     val pagerState = rememberPagerState(pageCount = { wordContents.size })
 
     LaunchedEffect(pagerState.currentPage) {
-        Log.d("DictionaryScreenContent", "onCurrentPageChanged: ${pagerState.currentPage}")
         viewModel.onCurrentPageChanged(pagerState.currentPage)
     }
-
     HorizontalPager(
         state = pagerState,
         modifier = Modifier.fillMaxWidth(),
@@ -78,7 +76,8 @@ fun DictionaryScreenContent(
         val wordContent = wordContents[page]
         Column(modifier = modifier) {
             Row(
-                verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = wordContent.word.replaceFirstChar {
@@ -172,57 +171,64 @@ fun DictionaryScreenContent(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(R.string.part_of_speech),
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = Dark
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(text = wordContent.meanings[partOfSpeechVariant].partOfSpeech,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = DarkGrey,
-                    modifier = if (wordContent.meanings.size > 1) Modifier.clickable {
-                        viewModel.onDropDownExpanded(
-                            page, true
-                        )
-                    } else Modifier)
-                if (wordContent.meanings.size > 1) {
-                    Box(contentAlignment = Alignment.CenterStart) {
-                        Spacer(modifier = Modifier.width(4.dp))
-                        IconButton(
-                            onClick = { viewModel.onDropDownExpanded(page, true) },
-                            modifier = Modifier
-                                .size(16.dp)
-                                .padding(top = 2.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.triangle),
-                                contentDescription = "",
-                                tint = Primary,
+            if (wordContent.meanings[partOfSpeechVariant].partOfSpeech.isNotBlank()) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = stringResource(R.string.part_of_speech),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = Dark
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(text = wordContent.meanings[partOfSpeechVariant].partOfSpeech,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = DarkGrey,
+                        modifier = if (wordContent.meanings.size > 1) Modifier.clickable {
+                            viewModel.onDropDownExpanded(
+                                page, true
                             )
-                        }
+                        } else Modifier)
+                    if (wordContent.meanings.size > 1) {
+                        Box(contentAlignment = Alignment.CenterStart) {
+                            Spacer(modifier = Modifier.width(4.dp))
+                            IconButton(
+                                onClick = { viewModel.onDropDownExpanded(page, true) },
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .padding(top = 2.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.triangle),
+                                    contentDescription = "",
+                                    tint = Primary,
+                                )
+                            }
 
-                        DropdownMenu(
-                            expanded = dictionaryState.dropDownExpanded[page] ?: false,
-                            modifier = Modifier.background(White),
-                            onDismissRequest = { viewModel.onDropDownExpanded(page, false) },
-                        ) {
-                            wordContent.meanings.forEach { meaning ->
-                                DropdownMenuItem(text = {
-                                    Text(
-                                        text = meaning.partOfSpeech,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = DarkGrey
-                                    )
-                                }, onClick = {
-                                    viewModel.onDropDownExpanded(page, false)
-                                    viewModel.onPartOfSpeechVariantChanged(
+                            DropdownMenu(
+                                expanded = dictionaryState.dropDownExpanded[page] ?: false,
+                                modifier = Modifier.background(White),
+                                onDismissRequest = {
+                                    viewModel.onDropDownExpanded(
                                         page,
-                                        wordContent.meanings.indexOf(meaning),
+                                        false
                                     )
-                                })
+                                },
+                            ) {
+                                wordContent.meanings.forEach { meaning ->
+                                    DropdownMenuItem(text = {
+                                        Text(
+                                            text = meaning.partOfSpeech,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = DarkGrey
+                                        )
+                                    }, onClick = {
+                                        viewModel.onDropDownExpanded(page, false)
+                                        viewModel.onPartOfSpeechVariantChanged(
+                                            page,
+                                            wordContent.meanings.indexOf(meaning),
+                                        )
+                                    })
+                                }
                             }
                         }
                     }
@@ -244,17 +250,7 @@ fun DictionaryScreenContent(
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            AccentButton(
-                modifier = Modifier.padding(horizontal = 10.dp),
-                onClick = {
-                    if (!dictionaryState.isFavorite) viewModel.addToDictionary() else viewModel.removeFromDictionary()
-                },
-                isEnabled = true,
-                text = if (dictionaryState.isFavorite) stringResource(R.string.remove_from_dictionary) else stringResource(
-                    R.string.add_to_dictionary
-                )
-            )
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
+
 }

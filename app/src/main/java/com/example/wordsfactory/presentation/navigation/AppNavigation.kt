@@ -21,7 +21,6 @@ import com.example.wordsfactory.presentation.video.VideoScreen
 fun AppNavigation(
     navController: NavHostController,
 ) {
-    // todo что делать с загрузкой страницы каждый раз при нажатии на нижнюю панель
     NavHost(
         navController, startDestination = Screen.Splash.route
     ) {
@@ -88,21 +87,16 @@ fun AppNavigation(
         }
         composable(
             "${Screen.Finish.route}/{correctCount}/{totalCount}",
-            arguments = listOf(
-                navArgument("correctCount") { type = NavType.IntType },
-                navArgument("totalCount") { type = NavType.IntType }
-            )
+            arguments = listOf(navArgument("correctCount") { type = NavType.IntType },
+                navArgument("totalCount") { type = NavType.IntType })
         ) {
             val correctCount = it.arguments?.getInt("correctCount") ?: 0
             val totalCount = it.arguments?.getInt("totalCount") ?: 0
-            FinishScreen(
-                correctCount = correctCount,
-                totalCount = totalCount,
-                onNavigateBack = {
-                    navController.navigate(Screen.Training.route) {
-                        popUpTo(Screen.Finish.route) { inclusive = true }
-                    }
-                }, onNavigateAgain = { navController.navigate(Screen.Question.route) })
+            FinishScreen(correctCount = correctCount, totalCount = totalCount, onNavigateBack = {
+                navController.navigate(Screen.Training.route) {
+                    popUpTo(Screen.Finish.route) { inclusive = true }
+                }
+            }, onNavigateAgain = { navController.navigate(Screen.Question.route) })
         }
     }
 }

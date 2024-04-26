@@ -12,5 +12,5 @@ interface MeaningDao {
     suspend fun insertAll(vararg secondTable: Meaning)
 
     @Query("SELECT * FROM Meaning WHERE wordId = :wordId")
-    suspend fun getMeanings(wordId: Int): List<Meaning>
+    suspend fun getMeanings(wordId: Int?): List<Meaning>?
 }

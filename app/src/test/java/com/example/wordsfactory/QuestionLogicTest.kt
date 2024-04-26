@@ -25,12 +25,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
-// todo тесты:
-// 1. Проверить что все слова разные
-// 2. Проверить что количество вопросв равно константе
-// 3. Проверить что берутся слова с наименьшим коэффициентом
-// 4. Проверить что коэффициент увеличивается при правильном ответе
-// 5. Проверить что коэффициент уменьшается при неправильном ответе
+
 class QuestionLogicTest {
     private val dispatcher = StandardTestDispatcher()
     private lateinit var getQuestionsUseCase: GetQuestionsUseCase

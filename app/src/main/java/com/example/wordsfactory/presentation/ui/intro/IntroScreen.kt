@@ -45,12 +45,6 @@ fun IntroScreen(onNavigation: () -> Unit) {
             Log.w("INTRO", "Fetching FCM registration token failed", task.exception)
             return@OnCompleteListener
         }
-
-//        // Get new FCM registration token
-//        val token = task.result
-//
-//        // Log and toast
-//        Log.d("INTRO", token)
     })
     val pages = listOf(
         IntroPage(

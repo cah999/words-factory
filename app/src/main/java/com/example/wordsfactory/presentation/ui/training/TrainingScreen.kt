@@ -1,5 +1,7 @@
 package com.example.wordsfactory.presentation.ui.training
 
+import android.Manifest
+import android.os.Build
 import androidx.compose.animation.core.EaseOutQuart
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.repeatable
@@ -20,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -39,6 +42,7 @@ import com.example.wordsfactory.common.Constants
 import com.example.wordsfactory.di.appModule
 import com.example.wordsfactory.di.dataModule
 import com.example.wordsfactory.di.domainModule
+import com.example.wordsfactory.presentation.ui.splash.NotificationPermissionDialog
 import com.example.wordsfactory.presentation.ui.utils.AccentButton
 import com.example.wordsfactory.ui.theme.Dark
 import com.example.wordsfactory.ui.theme.Error
@@ -46,10 +50,14 @@ import com.example.wordsfactory.ui.theme.Primary
 import com.example.wordsfactory.ui.theme.Secondary
 import com.example.wordsfactory.ui.theme.Success
 import com.example.wordsfactory.ui.theme.Warning
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.KoinApplication
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun TrainingScreen(onStartNavigate: () -> Unit, viewModel: TrainingViewModel = koinViewModel()) {
     val trainingState by viewModel.trainingState.collectAsStateWithLifecycle()
@@ -65,6 +73,17 @@ fun TrainingScreen(onStartNavigate: () -> Unit, viewModel: TrainingViewModel = k
             append(text.substring(text.indexOf(trainingState.count.toString()) + trainingState.count.toString().length))
         }
     }
+
+    val showNotificationDialog = remember { mutableStateOf(false) }
+    val notificationPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        rememberPermissionState(
+            permission = Manifest.permission.POST_NOTIFICATIONS
+        )
+    } else {
+        rememberPermissionState(
+            permission = Manifest.permission.ACCESS_NOTIFICATION_POLICY
+        )
+    }
     Column(
         verticalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -73,33 +92,54 @@ fun TrainingScreen(onStartNavigate: () -> Unit, viewModel: TrainingViewModel = k
             .fillMaxSize()
     ) {
         Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = annotatedString,
-            style = MaterialTheme.typography.headlineLarge,
-            color = Dark,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = stringResource(R.string.start_training),
-            style = MaterialTheme.typography.headlineLarge,
-            color = Dark,
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        if (!trainingState.timerStarted) {
-            AccentButton(
-                modifier = Modifier, onClick = {
-                    viewModel.onTimerStartedChanged(true)
-                }, isEnabled = true, text = stringResource(R.string.start)
+        if (trainingState.count == 0) {
+            Text(
+                text = stringResource(R.string.no_words),
+                style = MaterialTheme.typography.headlineLarge,
+                color = Dark,
+                textAlign = TextAlign.Center,
             )
+            Spacer(modifier = Modifier.weight(1f))
         } else {
-            InfiniteProgressBar(
-                modifier = Modifier.padding(bottom = 64.dp),
-                onFinishedNavigate = onStartNavigate,
-                time = Constants.TIMER_TIME
+            Text(
+                text = annotatedString,
+                style = MaterialTheme.typography.headlineLarge,
+                color = Dark,
+                textAlign = TextAlign.Center,
             )
+            Spacer(modifier = Modifier.height(32.dp))
+            Text(
+                text = stringResource(R.string.start_training),
+                style = MaterialTheme.typography.headlineLarge,
+                color = Dark,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            if (!trainingState.timerStarted) {
+                AccentButton(
+                    modifier = Modifier, onClick = {
+                        if (!(notificationPermissionState.status.isGranted || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)) {
+                            showNotificationDialog.value = true
+                        } else {
+                            viewModel.onTimerStartedChanged(true)
+                        }
+                    }, isEnabled = true, text = stringResource(R.string.start)
+                )
+            } else {
+                InfiniteProgressBar(
+                    modifier = Modifier.padding(bottom = 64.dp),
+                    onFinishedNavigate = onStartNavigate,
+                    time = Constants.TIMER_TIME
+                )
+            }
         }
     }
+
+    if (showNotificationDialog.value) NotificationPermissionDialog(
+        showNotificationDialog = showNotificationDialog,
+        notificationPermissionState = notificationPermissionState,
+        onResult = {
+            viewModel.onTimerStartedChanged(true)
+        })
 }
 
 

@@ -6,7 +6,7 @@ interface WordRepository {
     suspend fun getWords()
     suspend fun getQuestions(count: Int): List<Question>
     suspend fun getWordsCount(): Int
-    suspend fun getWord(name: String): Int
+    suspend fun getWord(name: String): Int?
     suspend fun getWordMeanings(name: String)
     suspend fun addWord(name: String, meanings: List<String>)
     suspend fun updateWord(name: String, count: String)

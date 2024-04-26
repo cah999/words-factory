@@ -34,14 +34,14 @@ import com.example.wordsfactory.ui.theme.Grey
 import com.example.wordsfactory.ui.theme.WordsFactoryTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-// todo floating button on dictionary screen
+
 class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val prefs = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE);
+        val prefs = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE)
         val cutout = prefs.getInt(Constants.CUTOUT, 0)
         when (cutout) {
             0 -> window.attributes.layoutInDisplayCutoutMode =

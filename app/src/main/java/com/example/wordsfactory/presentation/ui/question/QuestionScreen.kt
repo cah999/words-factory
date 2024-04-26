@@ -68,8 +68,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun QuestionScreen(onNavigate: (Int, Int) -> Unit, viewModel: QuestionViewModel = koinViewModel()) {
     val questionState by viewModel.dictionaryState.collectAsStateWithLifecycle()
-
-    var isBlocking by remember { mutableStateOf(false) }
     LaunchedEffect(questionState.currentQuestion) {
         animate(initialValue = 0f,
             targetValue = 1f,
@@ -88,10 +86,10 @@ fun QuestionScreen(onNavigate: (Int, Int) -> Unit, viewModel: QuestionViewModel 
     }
 
     LaunchedEffect(questionState.currentQuestion) {
-        isBlocking = true
+        viewModel.onIsBlockingChanged(true)
         delay(300)
         viewModel.onAnswerClickedChanged(false)
-        isBlocking = false
+        viewModel.onIsBlockingChanged(false)
     }
 
     Box(Modifier.fillMaxSize()) {
@@ -121,6 +119,10 @@ fun QuestionScreen(onNavigate: (Int, Int) -> Unit, viewModel: QuestionViewModel 
                     buttonClicked = questionState.answerClicked,
                     afterClick = {
                         if (viewModel.onNextQuestion() == false) {
+                            Log.d(
+                                "QuestionScreen",
+                                "navigating with ${questionState.correctQuestions} of ${questionState.totalQuestions}"
+                            )
                             onNavigate(questionState.correctQuestions, questionState.totalQuestions)
                         }
                     },
@@ -128,6 +130,7 @@ fun QuestionScreen(onNavigate: (Int, Int) -> Unit, viewModel: QuestionViewModel 
                         if (questionState.answerClicked) return@AnswerBox
                         viewModel.onAnswerClickedChanged(true)
                         viewModel.onChosenAnswerChanged(answer)
+                        viewModel.checkAnswerCorrect()
                         Log.d("QuestionScreen", "clicked answer: $answer")
                     })
             }
@@ -141,7 +144,11 @@ fun QuestionScreen(onNavigate: (Int, Int) -> Unit, viewModel: QuestionViewModel 
             )
         }
         if (questionState.currentQuestionCounter > 1) {
-            AnimatedVisibility(visible = isBlocking, enter = fadeIn(), exit = fadeOut()) {
+            AnimatedVisibility(
+                visible = questionState.isBlocking,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
                 Box(modifier = Modifier
                     .fillMaxSize()
                     .clickable { }

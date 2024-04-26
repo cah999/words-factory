@@ -10,7 +10,7 @@ import com.example.wordsfactory.data.model.WordTable
 interface WordDao {
 
     @Query("SELECT id FROM WordTable WHERE name = :name")
-    suspend fun getWordId(name: String): Int
+    suspend fun getWordId(name: String): Int?
 
     @Query("SELECT * FROM WordTable")
     suspend fun getAll(): List<WordTable>

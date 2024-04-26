@@ -9,5 +9,3 @@ data class WordTable(
     val name: String,
     var count: Int
 )
-
-// todo add releationship between word and userId in the future

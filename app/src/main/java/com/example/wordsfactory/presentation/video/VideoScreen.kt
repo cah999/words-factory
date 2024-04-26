@@ -16,23 +16,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.wordsfactory.common.Constants
 import com.example.wordsfactory.ui.theme.Primary
+import org.koin.androidx.compose.koinViewModel
 
-// todo есть смысл делать сохранение стейта?
+
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun VideoScreen() {
-    var backEnabled by remember { mutableStateOf(false) }
+fun VideoScreen(viewModel: VideoViewModel = koinViewModel()) {
+    val state by viewModel.videoState.collectAsStateWithLifecycle()
+//    var backEnabled by remember { mutableStateOf(false) }
     var webView: WebView? = null
-    var progress by remember { mutableIntStateOf(0) }
+//    var progress by remember { mutableIntStateOf(0) }
     val activity = LocalView.current.context as Activity
     Box {
         AndroidView(factory = { context ->
@@ -41,18 +41,19 @@ fun VideoScreen() {
                     override fun shouldOverrideUrlLoading(
                         view: WebView?, request: WebResourceRequest?
                     ): Boolean {
-                        return request?.url?.host != "learnenglish.britishcouncil.org"
+                        return request?.url?.host != Constants.VIDEO_HOST
                     }
 
                     override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
-                        backEnabled = view.canGoBack()
+                        viewModel.onBackEnabledChanged(view.canGoBack())
+//                        backEnabled = view.canGoBack()
                         super.onPageStarted(view, url, favicon)
                     }
                 }
                 webChromeClient = object : WebChromeClient() {
                     var customView: View? = null
                     override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                        progress = newProgress
+                        viewModel.onProgressChanged(newProgress)
                     }
 
                     override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
@@ -77,17 +78,17 @@ fun VideoScreen() {
                     }
                 }
                 settings.javaScriptEnabled = true
-                loadUrl(com.example.wordsfactory.common.Constants.VIDEO_URL)
+                loadUrl(Constants.VIDEO_URL)
                 webView = this
             }
         }, update = {
             webView = it
         })
-        BackHandler(enabled = backEnabled) {
+        BackHandler(enabled = state.backEnabled) {
             webView?.goBack()
         }
-        if (progress in 1..99) LinearProgressIndicator(
-            progress = { progress / 100f },
+        if (state.progress in 1..99) LinearProgressIndicator(
+            progress = { state.progress / 100f },
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .fillMaxWidth(),

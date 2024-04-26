@@ -6,20 +6,30 @@ import com.example.wordsfactory.data.service.WordResponse
 import com.example.wordsfactory.domain.repository.DictionaryRepository
 import com.example.wordsfactory.presentation.ui.utils.UiState
 
-class DictionaryRepositoryImpl(private val dictionaryApiService: DictionaryApiService) :
+class DictionaryRepositoryImpl(
+    private val dictionaryApiService: DictionaryApiService,
+    private val dictionaryRepositoryLocalImpl: DictionaryRepositoryLocalImpl
+) :
     DictionaryRepository {
     override suspend fun getWordContent(
         request: WordRequest,
         result: (UiState) -> Unit
     ): List<WordResponse>? {
-        dictionaryApiService.getWordContent(request.searchText).let {
-            if (it.isSuccessful) {
-                result.invoke(UiState.Success)
-                return it.body()
-            } else {
-                result.invoke(UiState.Error(it.errorBody()?.string() ?: "An error occurred"))
-                return null
+        try {
+            dictionaryApiService.getWordContent(request.searchText).let {
+                if (it.isSuccessful) {
+                    result.invoke(UiState.Success)
+                    return it.body()
+                } else {
+                    result.invoke(UiState.Default)
+//                    result.invoke(UiState.Error(it.errorBody()?.string() ?: "An error occurred"))
+                    return null
+                }
             }
+        } catch (e: Exception) {
+            return dictionaryRepositoryLocalImpl.getWordContent(request, result)
+//            result.invoke(UiState.Error(e.message ?: "An error occurred"))
+//            return null
         }
     }
 }

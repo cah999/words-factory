@@ -6,16 +6,17 @@ import com.example.wordsfactory.common.Constants
 import com.example.wordsfactory.domain.usecase.DecreaseWordCounterUseCase
 import com.example.wordsfactory.domain.usecase.GetQuestionsUseCase
 import com.example.wordsfactory.domain.usecase.IncreaseWordCounterUseCase
+import com.example.wordsfactory.domain.usecase.UpdateLastTimeTrainingUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// todo placeholder for training
 class QuestionViewModel(
     private val getQuestionsUseCase: GetQuestionsUseCase,
     private val increaseWordCounterUseCase: IncreaseWordCounterUseCase,
-    private val decreaseWordCounterUseCase: DecreaseWordCounterUseCase
+    private val decreaseWordCounterUseCase: DecreaseWordCounterUseCase,
+    private val updateLastTimeTrainingUseCase: UpdateLastTimeTrainingUseCase
 ) : ViewModel() {
     private val _questionState = MutableStateFlow(QuestionState())
     val dictionaryState = _questionState.asStateFlow()
@@ -80,16 +81,34 @@ class QuestionViewModel(
     }
 
     private suspend fun decreaseWordCounter() {
-        decreaseWordCounterUseCase.execute(_questionState.value.chosenAnswer?.text ?: "")
+        decreaseWordCounterUseCase.execute(_questionState.value.currentQuestion.answers.first { it.isCorrect }.text)
     }
 
-    // todo blur answer word in meaning !!
-    // test if < 3 words
-    // todo add placeholder if no words
+    fun onIsBlockingChanged(isBlocking: Boolean) {
+        _questionState.update { it.copy(isBlocking = isBlocking) }
+    }
+
     fun onNextQuestion(): Boolean? {
+        if (_questionState.value.chosenAnswer !in _questionState.value.currentQuestion.answers) {
+            return null
+        }
+        onTimerProgressChanged(0f)
+        val currentQuestionCounter = _questionState.value.currentQuestionCounter
+        val questions = _questionState.value.questions
+        if (currentQuestionCounter < questions.size) {
+            onCurrentQuestionStateChanged(questions[currentQuestionCounter])
+            onCurrentQuestionCounterChanged(currentQuestionCounter + 1)
+            onTimerProgressChanged(1f)
+            return true
+        }
+        updateLastTimeTraining()
+        return false
+    }
+
+    fun checkAnswerCorrect() {
         if (_questionState.value.answerClicked) {
             if (_questionState.value.chosenAnswer !in _questionState.value.currentQuestion.answers) {
-                return null
+                return
             }
             if (_questionState.value.chosenAnswer?.isCorrect == true) {
                 onCorrectQuestionsChanged(_questionState.value.correctQuestions + 1)
@@ -102,21 +121,16 @@ class QuestionViewModel(
                 }
             }
         }
-        onTimerProgressChanged(0f)
-        val currentQuestionCounter = _questionState.value.currentQuestionCounter
-        val questions = _questionState.value.questions
-        if (currentQuestionCounter < questions.size) {
-            onCurrentQuestionStateChanged(questions[currentQuestionCounter])
-            onCurrentQuestionCounterChanged(currentQuestionCounter + 1)
-            onTimerProgressChanged(1f)
-            return true
+    }
+
+    private fun updateLastTimeTraining() {
+        viewModelScope.launch {
+            updateLastTimeTrainingUseCase.execute()
         }
-        return false
     }
 
 }
 // todo refactor :)
-
 
 
 data class QuestionState(
@@ -128,6 +142,7 @@ data class QuestionState(
     val timerProgress: Float = 0f,
     val answerClicked: Boolean = false,
     val chosenAnswer: Answer? = null,
+    val isBlocking: Boolean = false,
 )
 
 data class Answer(

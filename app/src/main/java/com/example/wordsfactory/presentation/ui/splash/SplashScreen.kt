@@ -9,13 +9,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,44 +26,16 @@ import androidx.compose.ui.unit.dp
 import com.example.wordsfactory.R
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
+import com.google.accompanist.permissions.rememberPermissionState
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalPermissionsApi::class)
+
 @Composable
 fun SplashScreen(
     onSuccessNavigate: () -> Unit,
     onFailedNavigate: () -> Unit,
     viewModel: SplashViewModel = koinViewModel()
 ) {
-//    val showNotificationDialog = remember { mutableStateOf(false) }
-    // todo вынести разрешение на напоминания после добавления первого слова
-//    val notificationPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//        rememberPermissionState(
-//            permission = Manifest.permission.POST_NOTIFICATIONS
-//        )
-//    } else {
-//        rememberPermissionState(
-//            permission = Manifest.permission.ACCESS_NOTIFICATION_POLICY
-//        )
-//    }
-//    if (showNotificationDialog.value) FirebaseMessagingNotificationPermissionDialog(
-//        showNotificationDialog = showNotificationDialog,
-//        notificationPermissionState = notificationPermissionState,
-//        onResultNavigate = {
-//            onSuccessNavigate()
-//        })
-//
-//    LaunchedEffect(key1 = Unit) {
-//        if (notificationPermissionState.status.isGranted || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-//            Firebase.messaging.subscribeToTopic(Constants.DAILY_NOTIFICATION_TOPIC)
-//            onSuccessNavigate()
-//        } else {
-//            showNotificationDialog.value = true
-//        }
-//    }
-
     LaunchedEffect(Unit) {
         if (viewModel.isUserLoggedIn()) {
             onSuccessNavigate()
@@ -97,34 +70,47 @@ fun SplashScreen(
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun FirebaseMessagingNotificationPermissionDialog(
+fun NotificationPermissionDialog(
     showNotificationDialog: MutableState<Boolean>,
     notificationPermissionState: PermissionState,
-    onResultNavigate: () -> Unit
+    onResult: () -> Unit
 ) {
     if (showNotificationDialog.value) {
-        AlertDialog(onDismissRequest = {
-            showNotificationDialog.value = false
-            notificationPermissionState.launchPermissionRequest()
-        },
-            title = { Text(text = "Notification Permission") },
-            text = { Text(text = "Please allow this app to send you a notification") },
-            icon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.icon_foreground),
-                    contentDescription = null
+        AlertDialog(
+            onDismissRequest = {
+                showNotificationDialog.value = false
+                notificationPermissionState.launchPermissionRequest()
+            },
+            title = {
+                Text(
+                    text = "Allow notification?",
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            },
+            text = {
+                Text(
+                    text = "We'll remind you of the practice if you haven't already had a practice today",
+                    style = MaterialTheme.typography.bodyMedium
                 )
             },
             confirmButton = {
                 TextButton(onClick = {
                     showNotificationDialog.value = false
                     notificationPermissionState.launchPermissionRequest()
-                    Firebase.messaging.subscribeToTopic("Test")
-                    onResultNavigate()
+                    onResult()
                 }) {
-                    Text(text = "OK")
+                    Text(text = "YES", style = MaterialTheme.typography.bodyMedium)
                 }
-            })
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showNotificationDialog.value = false
+                    onResult()
+                }) {
+                    Text(text = "NO", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        )
     }
 }
 
@@ -132,4 +118,19 @@ fun FirebaseMessagingNotificationPermissionDialog(
 @Composable
 private fun SplashPreview() {
     SplashScreen(onSuccessNavigate = {}, onFailedNavigate = {})
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Preview
+@Composable
+private fun PreviewNotification() {
+    val state = remember { mutableStateOf(true) }
+    val permission =
+        rememberPermissionState(permission = android.Manifest.permission.ACCESS_NOTIFICATION_POLICY)
+    NotificationPermissionDialog(
+        showNotificationDialog = state,
+        notificationPermissionState =
+        permission,
+        onResult = {}
+    )
 }

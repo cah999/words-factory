@@ -8,6 +8,7 @@ import com.example.wordsfactory.presentation.ui.question.QuestionViewModel
 import com.example.wordsfactory.presentation.ui.signup.SignUpViewModel
 import com.example.wordsfactory.presentation.ui.splash.SplashViewModel
 import com.example.wordsfactory.presentation.ui.training.TrainingViewModel
+import com.example.wordsfactory.presentation.video.VideoViewModel
 import com.example.wordsfactory.presentation.widget.WidgetViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -46,7 +47,8 @@ val appModule = module {
         QuestionViewModel(
             getQuestionsUseCase = get(),
             increaseWordCounterUseCase = get(),
-            decreaseWordCounterUseCase = get()
+            decreaseWordCounterUseCase = get(),
+            updateLastTimeTrainingUseCase = get()
         )
     }
 
@@ -62,5 +64,9 @@ val appModule = module {
             getWordsCountUseCase = get(),
             getMyRememberedWordsUseCase = get()
         )
+    }
+
+    viewModel<VideoViewModel> {
+        VideoViewModel()
     }
 }

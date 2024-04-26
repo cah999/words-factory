@@ -15,8 +15,8 @@ data class WordResponse(
     val word: String,
     val phonetics: List<PhoneticResponse?>?,
     val meanings: List<MeaningResponse>,
-    val license: LicenseResponse,
-    val sourceUrls: List<String>
+    val license: LicenseResponse? = null,
+    val sourceUrls: List<String>? = null
 )
 
 
@@ -32,7 +32,7 @@ data class PhoneticResponse(
 
 
 data class MeaningResponse(
-    val partOfSpeech: String,
+    val partOfSpeech: String?,
     val definitions: List<DefinitionResponse>
 )
 
@@ -40,6 +40,6 @@ data class MeaningResponse(
 data class DefinitionResponse(
     val definition: String,
     val example: String? = null,
-    val synonyms: List<String>,
-    val antonyms: List<String>
+    val synonyms: List<String>? = null,
+    val antonyms: List<String>? = null
 )

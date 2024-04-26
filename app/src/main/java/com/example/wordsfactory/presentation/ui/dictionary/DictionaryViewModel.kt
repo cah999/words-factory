@@ -75,7 +75,7 @@ class DictionaryViewModel(
                                 )
                             },
                             meanings = word.meanings.map { meaning ->
-                                Meaning(partOfSpeech = meaning.partOfSpeech,
+                                Meaning(partOfSpeech = meaning.partOfSpeech ?: "",
                                     definitions = meaning.definitions.map { definition ->
                                         Definition(
                                             definition = definition.definition,
@@ -97,7 +97,7 @@ class DictionaryViewModel(
         viewModelScope.launch {
             val isFavorite = isWordFavoriteUseCase.execute(word)
             Log.d("isFavorite", isFavorite.toString())
-            if (isFavorite != 0) {
+            if (isFavorite != 0 && isFavorite != null) {
                 _dictionaryState.update { it.copy(isFavorite = true) }
             } else {
                 _dictionaryState.update { it.copy(isFavorite = false) }
@@ -184,6 +184,10 @@ class DictionaryViewModel(
             return "AU"
         }
         return "[?]"
+    }
+
+    fun onDismissError() {
+        _dictionaryUiState.update { UiState.Default }
     }
 
     private fun mergePhonetics(wordResponse: WordResponse): WordResponse {

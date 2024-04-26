@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class TrainingViewModel(
-    private val getWordsCountUseCase: GetWordsCountUseCase
+    private val getWordsCountUseCase: GetWordsCountUseCase,
 ) : ViewModel() {
 
     init {

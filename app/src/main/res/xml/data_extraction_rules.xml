@@ -5,9 +5,9 @@
 -->
 <data-extraction-rules>
     <cloud-backup>
-        <!-- TODO: Use <include> and <exclude> to control what is backed up.
-        <include .../>
-        <exclude .../>
+        <!--
+        <include domain="com.example.app" />
+        <exclude domain="com.example.app" />
         -->
     </cloud-backup>
     <!--

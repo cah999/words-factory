@@ -38,7 +38,6 @@ class DictionaryViewModel(
     val dictionaryState = _dictionaryState.asStateFlow()
     private var debounceJob: Job? = null
 
-    // todo toje krutaya fishka
     private fun debouncedFunction() {
         debounceJob?.cancel()
         debounceJob = viewModelScope.launch {
@@ -195,7 +194,6 @@ class DictionaryViewModel(
     }
 
     private fun mergePhonetics(wordResponse: WordResponse): WordResponse {
-        // todo krutaya fishka tak to )
         // https://api.dictionaryapi.dev/api/v2/entries/en/serve
         val phonetics = wordResponse.phonetics ?: return wordResponse
         val mergedPhonetics = phonetics.fold(mutableListOf<PhoneticResponse>()) { acc, phonetic ->

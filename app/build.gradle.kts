@@ -6,6 +6,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("C:\\ProjectX\\WordsFactory\\wordsfactory.jks")
+            storePassword = "123456"
+            keyPassword = "123456"
+            keyAlias = "key0"
+        }
+    }
     namespace = "com.example.wordsfactory"
     compileSdk = 34
 
@@ -28,6 +36,7 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {

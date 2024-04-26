@@ -122,7 +122,6 @@ fun DictionaryScreenContent(
                                             shape = RoundedCornerShape(8.dp)
                                         )
                                         .padding(horizontal = 8.dp, vertical = 4.dp)) {
-                                        // todo фишка (если не пришёл текст, то пишется тип транскрипции)
                                         Text(
                                             text = wordContent.phonetics[index].transcription
                                                 ?: viewModel.getTranscriptionType(
